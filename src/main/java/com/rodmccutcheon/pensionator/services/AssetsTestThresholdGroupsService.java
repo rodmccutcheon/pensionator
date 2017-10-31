@@ -11,7 +11,7 @@ public interface AssetsTestThresholdGroupsService {
 
     AssetsTestThresholdGroup getAssetsTestThresholdGroupById(Long id);
 
-    AssetsTestThresholdGroup getAssetsTestThresholdGroupByDate(Date date, Date date2);
+    AssetsTestThresholdGroup getAssetsTestThresholdGroupByDate(Date date);
 
     AssetsTestThresholdGroup saveAssetsTestThresholdGroup(AssetsTestThresholdGroup assetsTestThresholdGroup);
 

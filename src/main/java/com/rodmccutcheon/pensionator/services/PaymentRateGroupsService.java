@@ -11,7 +11,7 @@ public interface PaymentRateGroupsService {
 
     PaymentRateGroup getPaymentRateGroupById(Long id);
 
-    PaymentRateGroup getPaymentRateGroupByDate(Date date, Date date1);
+    PaymentRateGroup getPaymentRateGroupByDate(Date date);
 
     PaymentRateGroup savePaymentRateGroup(PaymentRateGroup paymentRateGroup);
 

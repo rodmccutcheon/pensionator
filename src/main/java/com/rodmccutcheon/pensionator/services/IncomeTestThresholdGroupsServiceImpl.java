@@ -29,8 +29,8 @@ public class IncomeTestThresholdGroupsServiceImpl implements IncomeTestThreshold
     }
 
     @Override
-    public IncomeTestThresholdGroup getIncomeTestThresholdGroupByDate(Date date, Date date2) {
-        return incomeTestThresholdGroupsRepository.findIncomeTestThresholdGroupByStartDateBeforeAndEndDateAfter(date, date2);
+    public IncomeTestThresholdGroup getIncomeTestThresholdGroupByDate(Date date) {
+        return incomeTestThresholdGroupsRepository.findIncomeTestThresholdGroupByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date);
     }
 
     @Override

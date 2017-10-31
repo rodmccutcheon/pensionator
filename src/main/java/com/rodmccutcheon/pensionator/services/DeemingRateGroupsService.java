@@ -11,7 +11,7 @@ public interface DeemingRateGroupsService {
 
     DeemingRateGroup getDeemingRateGroupById(Long id);
 
-    DeemingRateGroup getDeemingRateGroupByDate(Date date, Date date2);
+    DeemingRateGroup getDeemingRateGroupByDate(Date date);
 
     DeemingRateGroup saveDeemingRateGroup(DeemingRateGroup deemingRateGroup);
 

@@ -11,7 +11,7 @@ public interface IncomeTestThresholdGroupsService {
 
     IncomeTestThresholdGroup getIncomeTestThresholdGroupById(Long id);
 
-    IncomeTestThresholdGroup getIncomeTestThresholdGroupByDate(Date date, Date date2);
+    IncomeTestThresholdGroup getIncomeTestThresholdGroupByDate(Date date);
 
     IncomeTestThresholdGroup saveIncomeTestThresholdGroup(IncomeTestThresholdGroup IncomeTestThresholdGroup);
 

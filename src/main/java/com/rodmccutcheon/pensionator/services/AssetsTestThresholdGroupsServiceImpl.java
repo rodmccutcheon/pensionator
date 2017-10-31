@@ -29,8 +29,8 @@ public class AssetsTestThresholdGroupsServiceImpl implements AssetsTestThreshold
     }
 
     @Override
-    public AssetsTestThresholdGroup getAssetsTestThresholdGroupByDate(Date date, Date date2) {
-        return assetsTestThresholdGroupsRepository.findAssetsTestThresholdGroupByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date2);
+    public AssetsTestThresholdGroup getAssetsTestThresholdGroupByDate(Date date) {
+        return assetsTestThresholdGroupsRepository.findAssetsTestThresholdGroupByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date);
     }
 
     @Override

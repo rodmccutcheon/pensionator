@@ -29,8 +29,8 @@ public class DeemingRateGroupsServiceImpl implements DeemingRateGroupsService {
     }
 
     @Override
-    public DeemingRateGroup getDeemingRateGroupByDate(Date date, Date date2) {
-        return deemingRateGroupsRepository.findDeemingRateGroupByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date2);
+    public DeemingRateGroup getDeemingRateGroupByDate(Date date) {
+        return deemingRateGroupsRepository.findDeemingRateGroupByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date);
     }
 
     @Override

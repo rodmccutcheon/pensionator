@@ -63,14 +63,14 @@ INSERT INTO calculations (client_id, date, payment, applicable_test, comment) VA
   (1, '2017-09-25', 365.39, 'Income Test', 'Started part time job');
 
 INSERT INTO assets (calculation_id, asset_type_id, description, value) VALUES
-  (1, 1, 'Centrelink value', 5000),
-  (1, 2, '2001 Honda CRV', 4000),
-  (1, 8, 'CBA shares', 300000),
-  (1, 9, 'Magellan Global Fund', 250200);
+  (3, 1, 'Centrelink value', 5000),
+  (3, 2, '2001 Honda CRV', 4000),
+  (3, 8, 'CBA shares', 300000),
+  (3, 9, 'Magellan Global Fund', 250200);
 
 INSERT INTO income_streams (calculation_id, income_stream_type_id, description, value) VALUES
-  (1, 2, 'Russell ABP', 4250),
-  (1, 4, 'Challenger Lifetime Annuity', 2800);
+  (3, 2, 'Russell ABP', 4250),
+  (3, 4, 'Challenger Lifetime Annuity', 2800);
 
 INSERT INTO assets_test_threshold_groups (start_date, end_date) VALUES
   ('2016-07-01', '2017-06-30'),

@@ -29,8 +29,8 @@ public class PaymentRateGroupsServiceImpl implements PaymentRateGroupsService {
     }
 
     @Override
-    public PaymentRateGroup getPaymentRateGroupByDate(Date date, Date date1) {
-        return paymentRateGroupsRepository.findPaymentRateGroupByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date1);
+    public PaymentRateGroup getPaymentRateGroupByDate(Date date) {
+        return paymentRateGroupsRepository.findPaymentRateGroupByStartDateLessThanEqualAndEndDateGreaterThanEqual(date, date);
     }
 
     @Override

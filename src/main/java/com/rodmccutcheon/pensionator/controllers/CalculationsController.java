@@ -110,10 +110,10 @@ public class CalculationsController {
         }
         Client client = clientService.getClientById(clientId);
         calculation.setClient(client);
-        IncomeTestThresholdGroup i = incomeTestThresholdGroupsService.getIncomeTestThresholdGroupByDate(calculation.getDate(), calculation.getDate());
-        AssetsTestThresholdGroup a = assetsTestThresholdGroupsService.getAssetsTestThresholdGroupByDate(calculation.getDate(), calculation.getDate());
-        DeemingRateGroup d = deemingRateGroupsService.getDeemingRateGroupByDate(calculation.getDate(), calculation.getDate());
-        PaymentRateGroup p = paymentRateGroupsService.getPaymentRateGroupByDate(calculation.getDate(), calculation.getDate());
+        IncomeTestThresholdGroup i = incomeTestThresholdGroupsService.getIncomeTestThresholdGroupByDate(calculation.getDate());
+        AssetsTestThresholdGroup a = assetsTestThresholdGroupsService.getAssetsTestThresholdGroupByDate(calculation.getDate());
+        DeemingRateGroup d = deemingRateGroupsService.getDeemingRateGroupByDate(calculation.getDate());
+        PaymentRateGroup p = paymentRateGroupsService.getPaymentRateGroupByDate(calculation.getDate());
         calculation.calculatePayment(i, a, d, p);
         calculationService.saveCalculation(calculation);
         return "redirect:/clients/" + clientId + "/calculations/" + calculation.getId();
