@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pensionator</title>
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body class="page-body" data-url="http://neon.dev">
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <!--/*/ <th:block th:include="fragments/sidebar :: side"></th:block> /*/-->
+
+    <div class="main-content">
+
+        <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
+
+        <h1>Age Rules</h1>
+
+        <form role="form" th:object="${ageRule}" th:action="@{/ageRules}" method="post" class="form-horizontal">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Start Date</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="text" th:field="*{dateOfBirthStart}" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <div class="input-group-addon">
+                            <a href="#">
+                                <i class="entypo-calendar"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">End Date</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="text" th:field="*{dateOfBirthEnd}" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <div class="input-group-addon">
+                            <a href="#">
+                                <i class="entypo-calendar"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Eligible Age</label>
+                <div class="col-sm-2">
+                    <input type="text" th:field="*{eligibleAge}" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-5">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="/ageRules" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+</body>
+</html>

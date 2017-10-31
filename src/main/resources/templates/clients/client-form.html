@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pensionator</title>
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body class="page-body" data-url="http://neon.dev">
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <!--/*/ <th:block th:include="fragments/sidebar :: side"></th:block> /*/-->
+
+    <div class="main-content">
+
+        <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
+
+        <h1>Clients</h1>
+
+        <form role="form" th:object="${client}" th:action="@{/clients}" method="post" class="form-horizontal">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">First Name</label>
+                <div class="col-sm-2">
+                    <input type="text" th:field="*{firstName}" class="form-control" th:required="required" data-validate="required" minlength="2" maxlength="30"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Last Name</label>
+                <div class="col-sm-2">
+                    <input type="text" th:field="*{lastName}" class="form-control" th:required="required" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Gender</label>
+                <div class="col-sm-2">
+                    <select class="form-control" th:field="*{gender}" th:required="required" >
+                        <option value="" label="--- Select ---" />
+                        <option value="Male" label="Male" />
+                        <option value="Female" label="Female" />
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Date of Birth</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="text" th:field="*{dateOfBirth}" th:required="required" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <div class="input-group-addon">
+                            <a href="#">
+                                <i class="entypo-calendar"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Relationship Status</label>
+                <div class="col-sm-2">
+                    <select class="form-control" th:field="*{relationshipStatus}" th:required="required" >
+                        <option value="" label="--- Select ---" />
+                        <option th:each="relationshipStatus : ${relationshipStatuses}" th:value="${relationshipStatus.id}" th:text="${relationshipStatus.name}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Homeowner Status</label>
+                <div class="col-sm-2">
+                    <select class="form-control" th:field="*{homeownerStatus}" th:required="required" >
+                        <option value="" label="--- Select ---" />
+                        <option th:each="homeownerStatus : ${homeownerStatuses}" th:value="${homeownerStatus.id}" th:text="${homeownerStatus.name}"/>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-5">
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <a href="/clients" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+</body>
+</html>

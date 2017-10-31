@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pensionator</title>
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body class="page-body" data-url="http://neon.dev">
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <!--/*/ <th:block th:include="fragments/sidebar :: side"></th:block> /*/-->
+
+    <div class="main-content">
+
+        <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
+
+        <h1>Deeming Rates</h1>
+
+        <a href="/deemingRates/new" class="btn btn-default btn-icon">
+            Add Deeming Rates
+            <i class="entypo-plus"></i>
+        </a>
+        <br/>
+        <br/>
+
+        <script type="text/javascript">
+            jQuery( document ).ready( function( $ ) {
+
+                var $table1 = jQuery( '#table-1' );
+
+                // Initialize DataTable
+                $table1.DataTable( {
+                    "aLengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
+                    "bStateSave": true
+                });
+
+                // Initalize Select Dropdown after DataTables is created
+                $table1.closest( '.dataTables_wrapper' ).find( 'select' ).select2( {
+                    minimumResultsForSearch: -1
+                });
+
+                $('.btn-danger').click(function() {
+                    return window.confirm("Are you sure?");
+                });
+
+            } );
+        </script>
+
+
+        <table class="table table-bordered datatable" id="table-1">
+            <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="deemingRateGroup : ${deemingRateGroups}">
+                <td th:text="${#dates.format(deemingRateGroup.startDate, 'dd/MM/yyyy')}">Start Date</td>
+                <td th:text="${#dates.format(deemingRateGroup.endDate, 'dd/MM/yyyy')}">End Date</td>
+                <td>
+                    <a th:href="${'/deemingRates/edit/' + deemingRateGroup.id}" class="btn btn-default btn-sm btn-icon icon-left">
+                        <i class="entypo-pencil"></i>
+                        Edit
+                    </a>
+                    <a th:href="${'/deemingRates/delete/' + deemingRateGroup.id}" class="btn btn-danger btn-sm btn-icon icon-left">
+                        <i class="entypo-cancel"></i>
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+</body>
+</html>

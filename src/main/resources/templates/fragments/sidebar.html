@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pensionator</title>
+</head>
+<body class="page-body" data-url="http://neon.dev">
+
+<div class="page-container" th:fragment="side"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <div class="sidebar-menu">
+        <div class="sidebar-menu-inner">
+            <header class="logo-env">
+                <div class="logo"> <a href="http://demo.neontheme.com/dashboard/main/"> <img src="http://demo.neontheme.com/assets/images/logo@2x.png" width="120" alt="" /> </a> </div>
+                <div class="sidebar-collapse"> <a href="#" class="sidebar-collapse-icon"><!-- add class "with-animation" if you want sidebar to have animation during expanding/collapsing transition --> <i class="entypo-menu"></i> </a> </div>
+            </header>
+            <ul id="main-menu" class="main-menu">
+                <li class="root-level">
+                    <a href="/">
+                        <i class="entypo-gauge"></i>
+                        <span class="title">Dashboard</span>
+                    </a>
+                </li>
+                <li class="root-level">
+                    <a href="/clients">
+                        <i class="entypo-users"></i>
+                        <span class="title">Clients</span>
+                    </a>
+                </li>
+                <li class="has-sub root-level">
+                    <a href="/settings">
+                        <i class="entypo-cog"></i>
+                        <span class="title">Settings</span>
+                    </a>
+                    <ul>
+                        <li><a href="/ageRules">Age Rules</a></li>
+                        <li><a href="/paymentRates">Payment Rates</a></li>
+                        <li><a href="/deemingRates">Deeming Rates</a></li>
+                        <li><a href="/incomeTestThresholds">Income Test Thresholds</a></li>
+                        <li><a href="/assetsTestThresholds">Assets Test Thresholds</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>

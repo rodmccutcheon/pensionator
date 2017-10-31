@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pensionator</title>
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body class="page-body" data-url="http://neon.dev">
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <!--/*/ <th:block th:include="fragments/sidebar :: side"></th:block> /*/-->
+
+    <div class="main-content">
+
+        <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
+
+        <h1>Calculation</h1>
+
+        <form role="form" th:object="${calculation}" th:action="${'/clients/' + calculation.client.id + '/calculations'}" method="post" class="form-horizontal">
+            <input type="hidden" th:field="*{client.id}" />
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Date</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input th:field="*{date}" type="text" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <div class="input-group-addon">
+                            <a href="#">
+                                <i class="entypo-calendar"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Assets</label>
+            </div>
+            <div th:each="assets, stat : ${calculation.assets}">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label"></label>
+                    <div class="col-sm-2">
+                        <select th:field="*{assets[__${stat.index}__].assetType}" class="form-control">
+                            <option value="0" label="--- Select ---" />
+                            <option th:each="assetType : ${assetTypes}" th:value="${assetType.id}" th:text="${assetType.name}"/>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <input th:field="*{assets[__${stat.index}__].description}" type="text" class="form-control" placeholder="Description" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input th:field="*{assets[__${stat.index}__].value}" type="text" class="form-control" placeholder="Value" />
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" name="removeAsset" th:value="${stat.index}" class="btn btn-default">Remove Asset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label"></label>
+                <div class="col-sm-2">
+                    <button type="submit" name="addAsset" class="btn btn-default">Add Asset</button>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Income Streams</label>
+            </div>
+            <div th:each="incomeStreams, stat : ${calculation.incomeStreams}">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label"></label>
+                    <div class="col-sm-2">
+                        <select th:field="*{incomeStreams[__${stat.index}__].incomeStreamType}" class="form-control">
+                            <option value="0" label="--- Select ---" />
+                            <option th:each="incomeStreamType : ${incomeStreamTypes}" th:value="${incomeStreamType.id}" th:text="${incomeStreamType.name}"/>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <input th:field="*{incomeStreams[__${stat.index}__].description}" type="text" class="form-control" placeholder="Description" />
+                    </div>
+                    <div class="col-sm-2">
+                        <input th:field="*{incomeStreams[__${stat.index}__].value}" type="text" class="form-control" placeholder="Value" />
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="submit" name="removeIncomeStream" th:value="${stat.index}" class="btn btn-default">Remove Income Stream</button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label">Comment</label>
+                <div class="col-sm-6">
+                    <textarea th:field="*{comment}" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-1 control-label"></label>
+                <div class="col-sm-2">
+                    <button type="submit" name="addIncomeStream" class="btn btn-default">Add Income Stream</button>
+                </div>
+            </div>
+            <br/>
+            <br/>
+            <div class="form-group">
+                <div class="col-sm-offset-1 col-sm-5">
+                    <button type="submit" class="btn btn-primary">Calculate</button>
+                    <a href="/clients" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+</body>
+</html>

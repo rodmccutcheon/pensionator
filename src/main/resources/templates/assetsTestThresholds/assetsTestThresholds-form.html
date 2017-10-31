@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pensionator</title>
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body class="page-body" data-url="http://neon.dev">
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <!--/*/ <th:block th:include="fragments/sidebar :: side"></th:block> /*/-->
+
+    <div class="main-content">
+
+        <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
+
+        <h1>Assets Test Thresholds</h1>
+
+        <form role="form" th:object="${assetsTestThresholdGroup}" th:action="@{/assetsTestThresholds}" method="post" class="form-horizontal">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Start Date</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="text" th:field="*{startDate}" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <div class="input-group-addon">
+                            <a href="#">
+                                <i class="entypo-calendar"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">End Date</label>
+                <div class="col-sm-2">
+                    <div class="input-group">
+                        <input type="text" th:name="${assetsTestThresholdGroup.endDate}" th:value="${assetsTestThresholdGroup.endDate}" th:field="*{endDate}" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <div class="input-group-addon">
+                            <a href="#">
+                                <i class="entypo-calendar"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label"></label>
+                <div class="col-md-2">
+                    <label class="control-label">Homeowner</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="control-label">Non homeowner</label>
+                </div>
+                <br/>
+                <br/>
+            </div>
+
+            <div th:each="assetsTestThreshold, stat : ${assetsTestThresholdGroup.assetsTestThresholdsMatrix}" class="form-group">
+                <label th:text="${assetsTestThreshold.key.name}" class="col-sm-2 control-label"></label>
+                <div th:each="threshold, stat2 : ${assetsTestThreshold.value}">
+                <div class="col-md-2">
+                    <input type="hidden" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].id}" />
+                    <input type="hidden" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].relationshipStatus}" />
+                    <input type="hidden" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].homeownerStatus}" />
+                    <input type="text" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].threshold}" class="form-control" />
+                </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-5">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a href="/assetsTestThresholds" class="btn btn-default">Cancel</a>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+</body>
+</html>

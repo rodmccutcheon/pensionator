@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Pensionator</title>
+    <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+</head>
+<body class="page-body" data-url="http://neon.dev">
+
+<div class="page-container"><!-- add class "sidebar-collapsed" to close sidebar by default, "chat-visible" to make chat appear always -->
+
+    <!--/*/ <th:block th:include="fragments/sidebar :: side"></th:block> /*/-->
+
+    <div class="main-content">
+
+        <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
+
+        <h1 th:text="${calculation.client.firstName + ' ' + calculation.client.lastName}"></h1>
+        <h3 th:text="${'Calculation: ' + #dates.format(calculation.date, 'dd MMMM yyyy')}"></h3>
+        <br/>
+        <div class="col-md-6">
+            <a th:href="${'/clients/' + calculation.client.id + '/calculations/edit/' + calculation.id}" class="btn btn-default btn-icon">
+                Edit
+                <i class="entypo-pencil"></i>
+            </a>
+            <h4>Assets</h4>
+            <table th:if="${not #lists.isEmpty(calculation.assets)}" class="table table-striped">
+                <thead>
+                            <th>Asset Type</th>
+                            <th>Description</th>
+                            <th>Value</th>
+                            </thead>
+                            <tbody>
+                            <tr th:each="asset : ${calculation.assets}">
+                                <td th:text="${asset.assetType.name}"></td>
+                                <td th:text="${asset.description}"></td>
+                                <td>$<span th:text="${#numbers.formatDecimal(asset.value, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td></td>
+                                <td>$<strong th:text="${#numbers.formatDecimal(calculation.totalAssets, 0, 'COMMA', 2, 'POINT')}"></strong></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+            <br/>
+            <h4>Income Streams</h4>
+                <table th:if="${not #lists.isEmpty(calculation.assets)}" class="table table-striped">
+                    <thead>
+                    <th>Income Stream Type</th>
+                    <th>Description</th>
+                    <th>Value</th>
+                    </thead>
+                    <tbody>
+                    <tr th:each="incomeStream : ${calculation.incomeStreams}">
+                        <td th:text="${incomeStream.incomeStreamType.name}"></td>
+                        <td th:text="${incomeStream.description}"></td>
+                        <td>$<span th:text="${#numbers.formatDecimal(incomeStream.value, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td></td>
+                        <td>$<strong th:text="${#numbers.formatDecimal(calculation.regularIncome, 0, 'COMMA', 2, 'POINT')}"></strong></td>
+                    </tr>
+                    </tbody>
+                </table>
+            <br/>
+            <h4>Deemed Income</h4>
+            <table th:if="${not #lists.isEmpty(calculation.assets)}" class="table table-striped">
+                <thead>
+                <th>Amount</th>
+                <th>Deeming Rate</th>
+                <th>Deemed Income</th>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>$50,200</td>
+                    <td>1.75%</td>
+                    <td>$878.50</td>
+                </tr>
+                <tr>
+                    <td>$500,000</td>
+                    <td>3.25%</td>
+                    <td>$16,250.00</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td></td>
+                    <td><strong>$17,128.50</strong></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+        <h4>Payment under the Assets Test</h4>
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>Maximum Payment</td>
+                <td>$22,542.00 (per annum)</td>
+                <td>$867.00 (per fortnight)</td>
+            </tr>
+            <tr>
+                <td>Assessable Assets</td>
+                <td>$155,000</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Assets Test Threshold</td>
+                <td>$205,500</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Excess Assets</td>
+                <td>$0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Benefit Reduction</td>
+                <td>$0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Payment under Assets Test</td>
+                <td>$22,542 (per annum)</td>
+                <td>$867.00 (per fortnight)</td>
+            </tr>
+            </tbody>
+        </table>
+            <br/>
+        <h4>Payment under the Income Test</h4>
+        <table class="table">
+            <tbody>
+            <tr>
+                <td>Maximum Payment</td>
+                <td>$22,542.00 (per annum)</td>
+                <td>$867.00 (per fortnight)</td>
+            </tr>
+            <tr>
+                <td>Assessable income</td>
+                <td>$3,456.00</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Income Test limit</td>
+                <td>$4,212 (per annum)</td>
+                <td>$162 (per fortnight)</td>
+            </tr>
+            <tr>
+                <td>Excess Income</td>
+                <td>$0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Benefit Reduction</td>
+                <td>$0</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Payment under Income Test</td>
+                <td>$22,542.00 (per annum)</td>
+                <td>$<span th:text="${calculation.payment}"></span> (per fortnight)</td>
+            </tr>
+            </tbody>
+        </table>
+            <br/>
+            <h4>Summary</h4>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td>Entitlement Under</td>
+                    <td th:text="${calculation.applicableTest}"></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Estimated Payment</td>
+                    <td>$<span th:text="${calculation.payment * 26}"></span> (per annum)</td>
+                    <td>$<span th:text="${calculation.payment}"></span> (per fortnight)</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+
+    </div>
+</div>
+<!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+</body>
+</html>
+
+
