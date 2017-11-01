@@ -25,6 +25,9 @@ public class AssetsTestThreshold {
     @NotNull
     private BigDecimal threshold;
 
+    @NotNull
+    private BigDecimal reductionRate;
+
     public AssetsTestThreshold() { }
 
     public AssetsTestThreshold(RelationshipStatus relationshipStatus, HomeownerStatus homeownerStatus) {
@@ -62,5 +65,13 @@ public class AssetsTestThreshold {
 
     public void setThreshold(BigDecimal threshold) {
         this.threshold = threshold;
+    }
+
+    public BigDecimal getReductionRate() {
+        return reductionRate;
+    }
+
+    public void setReductionRate(BigDecimal reductionRate) {
+        this.reductionRate = reductionRate;
     }
 }

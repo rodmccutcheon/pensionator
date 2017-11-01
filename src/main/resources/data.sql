@@ -76,28 +76,26 @@ INSERT INTO assets_test_threshold_groups (start_date, end_date) VALUES
   ('2016-07-01', '2017-06-30'),
   ('2017-07-01', '2018-06-30');
 
-INSERT INTO assets_test_thresholds (assets_test_threshold_group_id, relationship_status_id, homeowner_status_id, threshold) VALUES
-  (1, 1, 1, 250000),
-  (1, 1, 2, 450000),
-  (1, 2, 1, 375000),
-  (1, 2, 2, 575000),
-  (1, 3, 1, 375000),
-  (1, 3, 2, 575000),
-  (2, 1, 1, 253750),
-  (2, 1, 2, 456750),
-  (2, 2, 1, 380500),
-  (2, 2, 2, 583500),
-  (2, 3, 1, 380500),
-  (2, 3, 2, 583500);
+INSERT INTO assets_test_thresholds (assets_test_threshold_group_id, relationship_status_id, homeowner_status_id, threshold, reduction_rate) VALUES
+  (1, 1, 1, 250000, 3),
+  (1, 1, 2, 450000, 3),
+  (1, 2, 1, 375000, 1.5),
+  (1, 2, 2, 575000, 1.5),
+  (1, 3, 1, 375000, 1.5),
+  (1, 3, 2, 575000, 1.5),
+  (2, 1, 1, 253750, 3),
+  (2, 1, 2, 456750, 3),
+  (2, 2, 1, 380500, 1.5),
+  (2, 2, 2, 583500, 1.5),
+  (2, 3, 1, 380500, 1.5),
+  (2, 3, 2, 583500, 1.5);
 
 INSERT INTO income_test_threshold_groups (start_date, end_date) VALUES
   ('2017-07-01', '2018-06-30');
 
-INSERT INTO income_test_thresholds (income_test_threshold_group_id, relationship_status_id, threshold_start, threshold_end, reduction_rate) VALUES
-  (1, 1, 0, 168, 0),
-  (1, 1, 168, null, 50),
-  (1, 2, 0, 300, 0),
-  (1, 2, 300, null, 50);
+INSERT INTO income_test_thresholds (income_test_threshold_group_id, relationship_status_id, threshold, reduction_rate) VALUES
+  (1, 1, 168, 0.5),
+  (1, 2, 300, 0.5);
 
 INSERT INTO deeming_rate_groups (start_date, end_date) VALUES
   ('2016-07-01', '2017-06-30'),

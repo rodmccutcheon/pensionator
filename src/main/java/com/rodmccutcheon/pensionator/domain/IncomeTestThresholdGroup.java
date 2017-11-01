@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "income_test_threshold_groups")
@@ -60,9 +59,12 @@ public class IncomeTestThresholdGroup {
         this.incomeTestThresholds = incomeTestThresholds;
     }
 
-    public List<IncomeTestThreshold> getIncomeTestThresholdsByRelationshipStatus(RelationshipStatus relationshipStatus) {
+    public IncomeTestThreshold getIncomeTestThresholdByRelationshipStatus(RelationshipStatus relationshipStatus) {
         return incomeTestThresholds
                 .stream()
-                .filter(i -> i.getRelationshipStatus().equals(relationshipStatus)).collect(Collectors.toList());
+                .filter(i -> i.getRelationshipStatus().equals(relationshipStatus))
+                .findFirst()
+                .get();
     }
+
 }

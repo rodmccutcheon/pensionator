@@ -133,33 +133,33 @@
             <tbody>
             <tr>
                 <td>Maximum Payment</td>
-                <td>$22,542.00 (per annum)</td>
-                <td>$(per fortnight)</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.maximumPayment * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.maximumPayment, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             <tr>
                 <td>Assessable income</td>
-                <td>$3,456.00</td>
-                <td></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.assessableIncome, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.assessableIncome / 26, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}">></td>
             </tr>
             <tr>
-                <td>Income Test limit</td>
-                <td>$4,212 (per annum)</td>
-                <td>$162 (per fortnight)</td>
+                <td>Income Test Threshold</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.threshold * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.threshold, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             <tr>
                 <td>Excess Income</td>
-                <td>$0</td>
-                <td></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.excessIncome * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.excessIncome, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             <tr>
                 <td>Benefit Reduction</td>
-                <td>$0</td>
-                <td></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.paymentReduction, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.paymentReduction / 26, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             <tr>
                 <td>Payment under Income Test</td>
-                <td>$22,542.00 (per annum)</td>
-                <td>$<span th:text="${calculation.payment}"></span> (per fortnight)</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.payment * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.payment, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             </tbody>
         </table>
@@ -174,8 +174,8 @@
                 </tr>
                 <tr>
                     <td>Estimated Payment</td>
-                    <td>$<span th:text="${calculation.payment * 26}"></span> (per annum)</td>
-                    <td>$<span th:text="${calculation.payment}"></span> (per fortnight)</td>
+                    <td th:text="${'$' + #numbers.formatDecimal(calculation.payment * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                    <td th:text="${'$' + #numbers.formatDecimal(calculation.payment, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
                 </tr>
                 </tbody>
             </table>

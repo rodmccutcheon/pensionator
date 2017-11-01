@@ -18,9 +18,7 @@ public class IncomeTestThreshold {
     private RelationshipStatus relationshipStatus;
 
     @NotNull
-    private BigDecimal thresholdStart;
-
-    private BigDecimal thresholdEnd;
+    private BigDecimal threshold;
 
     private BigDecimal reductionRate;
 
@@ -46,20 +44,12 @@ public class IncomeTestThreshold {
         this.relationshipStatus = relationshipStatus;
     }
 
-    public BigDecimal getThresholdStart() {
-        return thresholdStart;
+    public BigDecimal getThreshold(){
+        return threshold;
     }
 
-    public void setThresholdStart(BigDecimal thresholdStart) {
-        this.thresholdStart = thresholdStart;
-    }
-
-    public BigDecimal getThresholdEnd() {
-        return thresholdEnd;
-    }
-
-    public void setThresholdEnd(BigDecimal thresholdEnd) {
-        this.thresholdEnd = thresholdEnd;
+    public void setThreshold(BigDecimal threshold) {
+        this.threshold = threshold;
     }
 
     public BigDecimal getReductionRate() {

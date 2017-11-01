@@ -36,8 +36,10 @@ public class Calculation {
     private List<IncomeStream> incomeStreams;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "calculation_id")
     private AssetsTestPayment assetsTestPayment;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private IncomeTestPayment incomeTestPayment;
 
     public long getId() {
         return id;
@@ -112,6 +114,14 @@ public class Calculation {
         this.assetsTestPayment = assetsTestPayment;
     }
 
+    public IncomeTestPayment getIncomeTestPayment() {
+        return incomeTestPayment;
+    }
+
+    public void setIncomeTestPayment(IncomeTestPayment incomeTestPayment) {
+        this.incomeTestPayment = incomeTestPayment;
+    }
+
     public BigDecimal getTotalAssets() {
         return assets.stream().map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
@@ -165,15 +175,15 @@ public class Calculation {
                                  PaymentRateGroup paymentRateGroup) {
 
         calculateAssetsTestPayment(assetsTestThresholdGroup, paymentRateGroup);
-        BigDecimal incomeTestPayment = calculateIncomeTestPayment(incomeTestThresholdGroup, deemingRateGroup, paymentRateGroup);
+        calculateIncomeTestPayment(incomeTestThresholdGroup, deemingRateGroup, paymentRateGroup);
 
         // The test the results in the lower payment applies
-        if (assetsTestPayment.getPayment().compareTo(incomeTestPayment) < 0) {
+        if (assetsTestPayment.getPayment().compareTo(incomeTestPayment.getPayment()) < 0) {
             applicableTest = "Assets Test";
             payment = assetsTestPayment.getPayment();
         } else {
             applicableTest = "Income Test";
-            payment = incomeTestPayment;
+            payment = incomeTestPayment.getPayment();
         }
     }
 
@@ -191,34 +201,51 @@ public class Calculation {
                 client.getHomeownerStatus());
         assetsTestPayment.setThreshold(assetsTestThreshold.getThreshold());
 
-        assetsTestPayment.setAssessableAssets(getTotalAssets());
+        BigDecimal totalAssets = getTotalAssets();
+        assetsTestPayment.setAssessableAssets(totalAssets);
 
         // If the total assets value is less than the assets threshold, then the client is eligible for the maximum payment.
-        if (getTotalAssets().compareTo(assetsTestThreshold.getThreshold()) < 1) {
+        if (totalAssets.compareTo(assetsTestThreshold.getThreshold()) < 1) {
             assetsTestPayment.setExcessAssets(BigDecimal.ZERO);
             assetsTestPayment.setPaymentReduction(BigDecimal.ZERO);
-            assetsTestPayment.setPayment(paymentRate.getTotalPayment());
+            assetsTestPayment.setPayment(maximumPayment);
         } else {
-            BigDecimal excessAssets = getTotalAssets().subtract(assetsTestThreshold.getThreshold());
+            BigDecimal excessAssets = totalAssets.subtract(assetsTestThreshold.getThreshold());
             assetsTestPayment.setExcessAssets(excessAssets);
-            double reductionRate = 3.0;
-            BigDecimal paymentReduction = excessAssets.divide(BigDecimal.valueOf(1000)).multiply(BigDecimal.valueOf(reductionRate));
+            BigDecimal paymentReduction = excessAssets.divide(BigDecimal.valueOf(1000)).multiply(assetsTestThreshold.getReductionRate());
             assetsTestPayment.setPaymentReduction(paymentReduction);
             assetsTestPayment.setPayment(maximumPayment.subtract(paymentReduction));
         }
     }
 
-    public BigDecimal calculateIncomeTestPayment(IncomeTestThresholdGroup incomeTestThresholdGroup,
+    public void calculateIncomeTestPayment(IncomeTestThresholdGroup incomeTestThresholdGroup,
                                           DeemingRateGroup deemingRateGroup,
                                           PaymentRateGroup paymentRateGroup) {
 
+        incomeTestPayment = new IncomeTestPayment();
+
         PaymentRate paymentRate = paymentRateGroup.getPaymentRateByRelationshipStatus(client.getRelationshipStatus());
-        List<IncomeTestThreshold> incomeTestThresholds = incomeTestThresholdGroup.getIncomeTestThresholdsByRelationshipStatus(
+        BigDecimal maximumPayment = paymentRate.getTotalPayment();
+        incomeTestPayment.setMaximumPayment(maximumPayment);
+
+        IncomeTestThreshold incomeTestThreshold = incomeTestThresholdGroup.getIncomeTestThresholdByRelationshipStatus(
                 client.getRelationshipStatus());
+        incomeTestPayment.setThreshold(incomeTestThreshold.getThreshold());
         List<DeemingRate> deemingRates = deemingRateGroup.getDeemingRatesByRelationshipStatus(client.getRelationshipStatus());
 
-        getTotalIncome(deemingRateGroup);
+        BigDecimal totalIncome = getTotalIncome(deemingRateGroup);
+        incomeTestPayment.setAssessableIncome(totalIncome);
 
-        return BigDecimal.TEN;
+        if (totalIncome.divide(BigDecimal.valueOf(26), 2, BigDecimal.ROUND_HALF_UP).compareTo(incomeTestThreshold.getThreshold()) < 1) {
+            incomeTestPayment.setExcessIncome(BigDecimal.ZERO);
+            incomeTestPayment.setPaymentReduction(BigDecimal.ZERO);
+            incomeTestPayment.setPayment(maximumPayment);
+        } else {
+            BigDecimal excessIncome = totalIncome.divide(BigDecimal.valueOf(26), 2, BigDecimal.ROUND_HALF_UP).subtract(incomeTestThreshold.getThreshold());
+            incomeTestPayment.setExcessIncome(excessIncome);
+            BigDecimal paymentReduction = excessIncome.multiply(incomeTestThreshold.getReductionRate());
+            incomeTestPayment.setPaymentReduction(paymentReduction);
+            incomeTestPayment.setPayment(maximumPayment.subtract(paymentReduction));
+        }
     }
 }
