@@ -97,33 +97,33 @@
             <tbody>
             <tr>
                 <td>Maximum Payment</td>
-                <td>$22,542.00 (per annum)</td>
-                <td>$867.00 (per fortnight)</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.maximumPayment * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.maximumPayment, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             <tr>
                 <td>Assessable Assets</td>
-                <td>$155,000</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.assessableAssets, 0, 'COMMA', 2, 'POINT')}"></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Assets Test Threshold</td>
-                <td>$205,500</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.threshold, 0, 'COMMA', 2, 'POINT')}"></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Excess Assets</td>
-                <td>$0</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.excessAssets, 0, 'COMMA', 2, 'POINT')}"></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Benefit Reduction</td>
-                <td>$0</td>
-                <td></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.paymentReduction * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.paymentReduction, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}">></td>
             </tr>
             <tr>
                 <td>Payment under Assets Test</td>
-                <td>$22,542 (per annum)</td>
-                <td>$867.00 (per fortnight)</td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.payment * 26, 0, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.assetsTestPayment.payment, 0, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             </tbody>
         </table>
@@ -134,7 +134,7 @@
             <tr>
                 <td>Maximum Payment</td>
                 <td>$22,542.00 (per annum)</td>
-                <td>$867.00 (per fortnight)</td>
+                <td>$(per fortnight)</td>
             </tr>
             <tr>
                 <td>Assessable income</td>
