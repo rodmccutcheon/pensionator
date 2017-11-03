@@ -15,11 +15,11 @@
         <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
 
         <h1>Assets Test Thresholds</h1>
-
+        <br/>
         <form role="form" th:object="${assetsTestThresholdGroup}" th:action="@{/assetsTestThresholds}" method="post" class="form-horizontal">
             <input type="hidden" th:field="*{id}"/>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Start Date</label>
+                <label class="col-sm-1 control-label">Start Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
                         <input type="text" th:field="*{startDate}" class="form-control datepicker" data-format="dd MM yyyy" />
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">End Date</label>
+                <label class="col-sm-1 control-label">End Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
                         <input type="text" th:name="${assetsTestThresholdGroup.endDate}" th:value="${assetsTestThresholdGroup.endDate}" th:field="*{endDate}" class="form-control datepicker" data-format="dd MM yyyy" />
@@ -46,7 +46,7 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label"></label>
+                <label class="col-sm-1 control-label"></label>
                 <div class="col-md-2">
                     <label class="control-label">Homeowner</label>
                 </div>
@@ -58,19 +58,20 @@
             </div>
 
             <div th:each="assetsTestThreshold, stat : ${assetsTestThresholdGroup.assetsTestThresholdsMatrix}" class="form-group">
-                <label th:text="${assetsTestThreshold.key.name}" class="col-sm-2 control-label"></label>
+                <label th:text="${assetsTestThreshold.key.name}" class="col-sm-1 control-label"></label>
                 <div th:each="threshold, stat2 : ${assetsTestThreshold.value}">
                 <div class="col-md-2">
                     <input type="hidden" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].id}" />
                     <input type="hidden" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].relationshipStatus}" />
                     <input type="hidden" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].homeownerStatus}" />
-                    <input type="text" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].threshold}" class="form-control" />
+                    <input type="text" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].threshold}" class="form-control" placeholder="Threshold" />
+                    <input type="text" th:field="*{assetsTestThresholds[__${(stat.index * 2) + stat2.index}__].reductionRate}" class="form-control" placeholder="Reduction Rate"/>
                 </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-5">
+                <div class="col-sm-offset-1 col-sm-5">
                     <button type="submit" class="btn btn-primary">Save</button>
                     <a href="/assetsTestThresholds" class="btn btn-default">Cancel</a>
                 </div>

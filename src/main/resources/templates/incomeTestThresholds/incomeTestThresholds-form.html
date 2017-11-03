@@ -15,11 +15,11 @@
         <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
 
         <h1>Income Test Thresholds</h1>
-
+        <br/>
         <form role="form" th:object="${incomeTestThresholdGroup}" th:action="@{/incomeTestThresholds}" method="post" class="form-horizontal">
             <input type="hidden" th:field="*{id}"/>
             <div class="form-group">
-                <label class="col-sm-2 control-label">Start Date</label>
+                <label class="col-sm-1 control-label">Start Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
                         <input type="text" th:field="*{startDate}" class="form-control datepicker" data-format="dd MM yyyy" />
@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-2 control-label">End Date</label>
+                <label class="col-sm-1 control-label">End Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
                         <input type="text" th:name="${incomeTestThresholdGroup.endDate}" th:value="${incomeTestThresholdGroup.endDate}" th:field="*{endDate}" class="form-control datepicker" data-format="dd MM yyyy" />
@@ -46,12 +46,9 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-2 control-label"></label>
+                <label class="col-sm-1 control-label"></label>
                 <div class="col-md-2">
-                    <label class="control-label">Start</label>
-                </div>
-                <div class="col-md-2">
-                    <label class="control-label">End</label>
+                    <label class="control-label">Threshold</label>
                 </div>
                 <div class="col-md-2">
                     <label class="control-label">Reduction Rate</label>
@@ -61,12 +58,9 @@
             </div>
 
             <div th:each="incomeTestThreshold, stat : ${incomeTestThresholdGroup.incomeTestThresholds}" class="form-group">
-                <label th:text="${incomeTestThreshold.relationshipStatus.name}" class="col-sm-2 control-label"></label>
+                <label th:text="${incomeTestThreshold.relationshipStatus.name}" class="col-sm-1 control-label"></label>
                 <div class="col-md-2">
-                    <input type="text" th:field="*{incomeTestThresholds[__${stat.index}__].thresholdStart}" class="form-control" />
-                </div>
-                <div class="col-md-2">
-                    <input type="text" th:field="*{incomeTestThresholds[__${stat.index}__].thresholdEnd}" class="form-control" />
+                    <input type="text" th:field="*{incomeTestThresholds[__${stat.index}__].threshold}" class="form-control" />
                 </div>
                 <div class="col-md-2">
                     <input type="text" th:field="*{incomeTestThresholds[__${stat.index}__].reductionRate}" class="form-control" />
@@ -74,7 +68,7 @@
             </div>
 
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-5">
+                <div class="col-sm-offset-1 col-sm-5">
                     <button type="submit" class="btn btn-primary">Save</button>
                     <a href="/incomeTestThresholds" class="btn btn-default">Cancel</a>
                 </div>
