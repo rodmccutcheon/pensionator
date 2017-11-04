@@ -3,6 +3,30 @@
 <head>
     <title>Pensionator</title>
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+    <script type="text/javascript">
+        jQuery( document ).ready( function( $ ) {
+            $('#client\\.relationshipStatus').on('change', function() {
+                $('#partner\\.relationshipStatus').val(this.value);
+                if (this.value == 2 || this.value == 3) {
+                    $('#partner').show();
+                    $('#partner\\.firstName').prop('required', true);
+                    $('#partner\\.lastName').prop('required', true);
+                    $('#partner\\.gender').prop('required', true);
+                    $('#partner\\.dateOfBirth').prop('required', true);
+                } else {
+                    $('#partner').hide();
+                    $('#partner\\.firstName').prop('required', false);
+                    $('#partner\\.lastName').prop('required', false);
+                    $('#partner\\.gender').prop('required', false);
+                    $('#partner\\.dateOfBirth').prop('required', false);
+                }
+            });
+
+            $('#client\\.homeownerStatus').on('change', function() {
+                $('#partner\\.homeownerStatus').val(this.value);
+            })
+        });
+    </script>
 </head>
 <body class="page-body" data-url="http://neon.dev">
 
@@ -16,24 +40,24 @@
 
         <h1>Clients</h1>
 
-        <form role="form" th:object="${client}" th:action="@{/clients}" method="post" class="form-horizontal">
-            <input type="hidden" th:field="*{id}"/>
+        <form role="form" th:object="${couple}" th:action="@{/clients}" method="post" class="form-horizontal">
+            <input type="hidden" th:field="*{client.id}"/>
             <div class="form-group">
                 <label class="col-sm-2 control-label">First Name</label>
                 <div class="col-sm-2">
-                    <input type="text" th:field="*{firstName}" class="form-control" th:required="required" data-validate="required" minlength="2" maxlength="30"/>
+                    <input type="text" th:field="*{client.firstName}" class="form-control" th:required="required" data-validate="required" minlength="2" maxlength="30"/>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Last Name</label>
                 <div class="col-sm-2">
-                    <input type="text" th:field="*{lastName}" class="form-control" th:required="required" />
+                    <input type="text" th:field="*{client.lastName}" class="form-control" th:required="required" />
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label">Gender</label>
                 <div class="col-sm-2">
-                    <select class="form-control" th:field="*{gender}" th:required="required" >
+                    <select class="form-control" th:field="*{client.gender}" th:required="required" >
                         <option value="" label="--- Select ---" />
                         <option value="Male" label="Male" />
                         <option value="Female" label="Female" />
@@ -44,7 +68,7 @@
                 <label class="col-sm-2 control-label">Date of Birth</label>
                 <div class="col-sm-2">
                     <div class="input-group">
-                        <input type="text" th:field="*{dateOfBirth}" th:required="required" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <input type="text" th:field="*{client.dateOfBirth}" th:required="required" class="form-control datepicker" data-format="dd MM yyyy" />
                         <div class="input-group-addon">
                             <a href="#">
                                 <i class="entypo-calendar"></i>
@@ -56,7 +80,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Relationship Status</label>
                 <div class="col-sm-2">
-                    <select class="form-control" th:field="*{relationshipStatus}" th:required="required" >
+                    <select class="form-control" th:field="*{client.relationshipStatus}" th:required="required" >
                         <option value="" label="--- Select ---" />
                         <option th:each="relationshipStatus : ${relationshipStatuses}" th:value="${relationshipStatus.id}" th:text="${relationshipStatus.name}"/>
                     </select>
@@ -65,11 +89,51 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">Homeowner Status</label>
                 <div class="col-sm-2">
-                    <select class="form-control" th:field="*{homeownerStatus}" th:required="required" >
+                    <select class="form-control" th:field="*{client.homeownerStatus}" th:required="required" >
                         <option value="" label="--- Select ---" />
                         <option th:each="homeownerStatus : ${homeownerStatuses}" th:value="${homeownerStatus.id}" th:text="${homeownerStatus.name}"/>
                     </select>
                 </div>
+            </div>
+            <div id="partner" style="display: none">
+                <h4>Partner</h4>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">First Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" th:field="*{partner.firstName}" class="form-control" data-validate="required" minlength="2" maxlength="30"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Last Name</label>
+                    <div class="col-sm-2">
+                        <input type="text" th:field="*{partner.lastName}" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Gender</label>
+                    <div class="col-sm-2">
+                        <select class="form-control" th:field="*{partner.gender}" >
+                            <option value="" label="--- Select ---" />
+                            <option value="Male" label="Male" />
+                            <option value="Female" label="Female" />
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Date of Birth</label>
+                    <div class="col-sm-2">
+                        <div class="input-group">
+                            <input type="text" th:field="*{partner.dateOfBirth}" class="form-control datepicker" data-format="dd MM yyyy" />
+                            <div class="input-group-addon">
+                                <a href="#">
+                                    <i class="entypo-calendar"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" th:field="*{partner.relationshipStatus}" />
+                <input type="hidden" th:field="*{partner.homeownerStatus}" />
             </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-5">

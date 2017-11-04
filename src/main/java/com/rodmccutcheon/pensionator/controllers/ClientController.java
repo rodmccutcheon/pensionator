@@ -1,6 +1,6 @@
 package com.rodmccutcheon.pensionator.controllers;
 
-import com.rodmccutcheon.pensionator.domain.Client;
+import com.rodmccutcheon.pensionator.domain.Couple;
 import com.rodmccutcheon.pensionator.services.ClientService;
 import com.rodmccutcheon.pensionator.services.HomeownerStatusesService;
 import com.rodmccutcheon.pensionator.services.RelationshipStatusService;
@@ -40,21 +40,28 @@ public class ClientController {
 
     @GetMapping("/new")
     public String create(Model model) {
-        model.addAttribute("client", new Client());
+        model.addAttribute("couple", new Couple());
+        //model.addAttribute("partner", new Client());
         model.addAttribute("relationshipStatuses", relationshipStatusService.listAllRelationshipStatuses());
         model.addAttribute("homeownerStatuses", homeownerStatusesService.listAllHomeownerStatuses());
         return "clients/client-form";
     }
 
     @PostMapping
-    public String save(@Valid Client client, BindingResult bindingResult, Model model) {
+    public String save(@Valid Couple couple, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("relationshipStatuses", relationshipStatusService.listAllRelationshipStatuses());
             model.addAttribute("homeownerStatuses", homeownerStatusesService.listAllHomeownerStatuses());
             return "clients/client-form";
         }
-        clientService.saveClient(client);
-        return "redirect:/clients/" + client.getId();
+        clientService.saveClient(couple.getClient());
+        if (couple.getPartner().getFirstName() != "") {
+            couple.getPartner().setPartner(couple.getClient());
+            clientService.saveClient(couple.getPartner());
+            couple.getClient().setPartner(couple.getPartner());
+            clientService.saveClient(couple.getClient());
+        }
+        return "redirect:/clients/" + couple.getClient().getId();
     }
 
     @GetMapping("/{id}")

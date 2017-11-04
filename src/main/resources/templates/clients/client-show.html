@@ -13,69 +13,38 @@
     <div class="main-content">
 
         <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
-
-        <h1 th:text="${client.firstName + ' ' + client.lastName}"></h1>
+        <div th:switch="${client.partner == null}">
+            <h1 th:case="${true}" th:text="${client.firstName + ' ' + client.lastName}"></h1>
+            <h1 th:case="${false}" th:text="${client.firstName + ' &amp; ' + client.partner.firstName + ' ' + client.lastName}"></h1>
+        </div>
+        <br/>
         <div class="row">
-        <div class="col-sm-6">
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Date of Birth</label>
-                <div class="col-sm-2">
-                    <span th:text="${#dates.format(client.dateOfBirth, 'dd/MM/yyyy')}"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Age</label>
-                <div class="col-sm-2">
-                    <span th:text="${client.age}"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Gender</label>
-                <div class="col-sm-2">
-                    <span th:text="${client.gender}"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Homeowner Status</label>
-                <div class="col-sm-2">
-                    <span th:text="${client.homeownerStatus.name}"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Relationship Status</label>
-                <div class="col-sm-2">
-                    <span th:text="${client.relationshipStatus.name}"></span>
-                </div>
-            </div>
-        </form>
-        </div>
-
-        <div th:if="${client.partner != null}" class="col-sm-6">
-            <h2 th:text="${client.partner.firstName + ' ' + client.partner.lastName}"></h2>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Date of Birth</label>
-                <div class="col-sm-5">
-                    <span th:text="${#dates.format(client.partner.dateOfBirth, 'dd/MM/yyyy')}"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Age</label>
-                <div class="col-sm-5">
-                    <span th:text="${client.partner.age}"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Gender</label>
-                <div class="col-sm-5">
-                    <span th:text="${client.partner.gender}"></span>
-                </div>
+            <div class="col-sm-3">
+                <dl class="dl-horizontal">
+                    <dt>Date of Birth</dt>
+                    <dd th:text="${#dates.format(client.dateOfBirth, 'dd/MM/yyyy')}">></dd>
+                    <dt>Age</dt>
+                    <dd th:text="${client.age}"></dd>
+                    <dt>Gender</dt>
+                    <dd th:text="${client.gender}"></dd>
+                    <dt>Homeowner Status</dt>
+                    <dd th:text="${client.homeownerStatus.name}"></dd>
+                    <dt>Relationship Status</dt>
+                    <dd th:text="${client.relationshipStatus.name}">></dd>
+                </dl>
             </div>
 
-        </form>
+            <div th:if="${client.partner != null}" class="col-sm-3">
+                <dl class="dl-horizontal">
+                    <dt>Date of Birth</dt>
+                    <dd th:text="${#dates.format(client.partner.dateOfBirth, 'dd/MM/yyyy')}"></dd>
+                    <dt>Age</dt>
+                    <dd th:text="${client.partner.age}"></dd>
+                    <dt>Gender</dt>
+                    <dd th:text="${client.partner.gender}"></dd>
+                </dl>
+            </div>
         </div>
-    </div>
                 <div class="row">
                     <ul class="nav nav-tabs">
                         <li class="active">
