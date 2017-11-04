@@ -22,6 +22,10 @@
                 Edit
                 <i class="entypo-pencil"></i>
             </a>
+            <a th:href="${'/clients/' + calculation.client.id}" class="btn btn-default btn-icon">
+                Back
+                <i class="entypo-back"></i>
+            </a>
             <h4>Assets</h4>
             <table th:if="${not #lists.isEmpty(calculation.assets)}" class="table table-striped">
                 <thead>

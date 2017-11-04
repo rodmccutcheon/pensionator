@@ -25,9 +25,9 @@ INSERT INTO payment_rates (payment_rate_group_id, relationship_status_id, maximu
   (1, 1, 808.30, 65.90, 14.10),
   (1, 2, 609.30, 49.70, 10.60),
   (1, 3, 808.30, 65.90, 14.10),
-  (2, 1, 808.30, 65.90, 14.10),
-  (2, 2, 609.30, 49.70, 10.60),
-  (2, 3, 808.30, 65.90, 14.10);
+  (2, 1, 814.00, 66.30, 14.10),
+  (2, 2, 613.60, 50.00, 10.60),
+  (2, 3, 814.00, 66.30, 14.10);
 
 INSERT INTO income_stream_types (id, name) VALUES
   (1, 'Salary'),
@@ -91,11 +91,14 @@ INSERT INTO assets_test_thresholds (assets_test_threshold_group_id, relationship
   (2, 3, 2, 583500, 1.5);
 
 INSERT INTO income_test_threshold_groups (start_date, end_date) VALUES
+  ('2016-07-01', '2017-06-30'),
   ('2017-07-01', '2018-06-30');
 
 INSERT INTO income_test_thresholds (income_test_threshold_group_id, relationship_status_id, threshold, reduction_rate) VALUES
-  (1, 1, 168, 0.5),
-  (1, 2, 300, 0.5);
+  (1, 1, 164, 0.5),
+  (1, 2, 292, 0.5),
+  (2, 1, 168, 0.5),
+  (2, 2, 300, 0.5);
 
 INSERT INTO deeming_rate_groups (start_date, end_date) VALUES
   ('2016-07-01', '2017-06-30'),

@@ -18,6 +18,9 @@
             <h1 th:case="${false}" th:text="${client.firstName + ' &amp; ' + client.partner.firstName + ' ' + client.lastName}"></h1>
         </div>
         <br/>
+        <div th:if="${error}" class="alert alert-danger">
+            <strong>Error!</strong> <span th:text="${error}"></span>
+        </div>
         <div class="row">
             <div class="col-sm-3">
                 <dl class="dl-horizontal">
@@ -84,6 +87,10 @@
                                             <a th:href="${'/clients/' + client.id + '/calculations/edit/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
                                                 <i class="entypo-pencil"></i>
                                                 Edit
+                                            </a>
+                                            <a th:href="${'/clients/' + client.id + '/calculations/clone/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
+                                                <i class="fa fa-clone"></i>
+                                                Duplicate
                                             </a>
                                             <a th:href="${'/clients/' + client.id + '/calculations/delete/' + calculation.id}" class="btn btn-danger btn-sm btn-icon icon-left">
                                                 <i class="entypo-cancel"></i>

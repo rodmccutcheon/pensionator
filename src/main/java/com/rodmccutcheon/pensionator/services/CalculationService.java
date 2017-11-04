@@ -8,5 +8,7 @@ public interface CalculationService {
 
     Calculation saveCalculation(Calculation calculation);
 
+    Calculation cloneCalculation(Calculation calculation);
+
     void deleteCalculation(Long id);
 }

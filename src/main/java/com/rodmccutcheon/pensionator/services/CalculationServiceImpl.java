@@ -26,6 +26,15 @@ public class CalculationServiceImpl implements CalculationService {
     }
 
     @Override
+    public Calculation cloneCalculation(Calculation calculation) {
+        calculationRepository.detachCalculation(calculation);
+        calculation.setId(0);
+        calculation.getAssets().stream().forEach(a -> a.setId(0));
+        calculation.getIncomeStreams().stream().forEach(i -> i.setId(0));
+        return calculationRepository.save(calculation);
+    }
+
+    @Override
     public void deleteCalculation(Long id) {
         calculationRepository.delete(id);
     }

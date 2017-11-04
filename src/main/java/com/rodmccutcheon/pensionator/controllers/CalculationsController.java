@@ -1,6 +1,7 @@
 package com.rodmccutcheon.pensionator.controllers;
 
 import com.rodmccutcheon.pensionator.domain.*;
+import com.rodmccutcheon.pensionator.domain.exceptions.CalculationException;
 import com.rodmccutcheon.pensionator.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 @Controller
 @RequestMapping("/clients/{clientId}/calculations")
@@ -49,8 +50,16 @@ public class CalculationsController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable Long id, Model model) {
-        model.addAttribute(calculationService.getCalculationById(id));
+    public String show(@PathVariable Long clientId, @PathVariable Long id, Model model) {
+        Calculation calculation = null;
+        try {
+            calculation = calculate(calculationService.getCalculationById(id));
+        } catch (CalculationException e) {
+            model.addAttribute("client", clientService.getClientById(clientId));
+            model.addAttribute("error", e.getMessage());
+            return "clients/client-show";
+        }
+        model.addAttribute(calculation);
         return "clients/client-calculation-show";
     }
 
@@ -59,8 +68,8 @@ public class CalculationsController {
         Client client = clientService.getClientById(clientId);
         Calculation calculation = new Calculation();
         calculation.setClient(client);
-        calculation.setAssets(new ArrayList<>(Arrays.asList(new Asset())));
-        calculation.setIncomeStreams(new ArrayList<>(Arrays.asList(new IncomeStream())));
+        calculation.setAssets(new LinkedHashSet<>(Arrays.asList(new Asset())));
+        calculation.setIncomeStreams(new LinkedHashSet<>(Arrays.asList(new IncomeStream())));
         model.addAttribute("calculation", calculation);
         model.addAttribute("assetTypes", assetTypesService.listAllAssetTypes());
         model.addAttribute("incomeStreamTypes", incomeStreamTypesService.listAllIncomeStreamTypes());
@@ -110,12 +119,12 @@ public class CalculationsController {
         }
         Client client = clientService.getClientById(clientId);
         calculation.setClient(client);
-        IncomeTestThresholdGroup i = incomeTestThresholdGroupsService.getIncomeTestThresholdGroupByDate(calculation.getDate());
-        AssetsTestThresholdGroup a = assetsTestThresholdGroupsService.getAssetsTestThresholdGroupByDate(calculation.getDate());
-        DeemingRateGroup d = deemingRateGroupsService.getDeemingRateGroupByDate(calculation.getDate());
-        PaymentRateGroup p = paymentRateGroupsService.getPaymentRateGroupByDate(calculation.getDate());
-        calculation.calculatePayment(i, a, d, p);
-        calculationService.saveCalculation(calculation);
+        try {
+            calculate(calculation);
+        } catch (CalculationException e) {
+            model.addAttribute("error", e.getMessage());
+            return "clients/client-calculation";
+        }
         return "redirect:/clients/" + clientId + "/calculations/" + calculation.getId();
     }
 
@@ -127,10 +136,25 @@ public class CalculationsController {
         return "clients/client-calculation";
     }
 
+    @GetMapping("/clone/{id}")
+    public String clone(@PathVariable Long clientId, @PathVariable Long id) {
+        calculationService.cloneCalculation(calculationService.getCalculationById(id));
+        return "redirect:/clients/" + clientId;
+    }
+
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id) {
+    public String delete(@PathVariable Long clientId, @PathVariable Long id) {
         calculationService.deleteCalculation(id);
-        return "redirect:/clients";
+        return "redirect:/clients/" + clientId;
+    }
+
+    private Calculation calculate(Calculation calculation) throws CalculationException {
+        IncomeTestThresholdGroup i = incomeTestThresholdGroupsService.getIncomeTestThresholdGroupByDate(calculation.getDate());
+        AssetsTestThresholdGroup a = assetsTestThresholdGroupsService.getAssetsTestThresholdGroupByDate(calculation.getDate());
+        DeemingRateGroup d = deemingRateGroupsService.getDeemingRateGroupByDate(calculation.getDate());
+        PaymentRateGroup p = paymentRateGroupsService.getPaymentRateGroupByDate(calculation.getDate());
+        calculation.calculatePayment(i, a, d, p);
+        return calculationService.saveCalculation(calculation);
     }
 
 }

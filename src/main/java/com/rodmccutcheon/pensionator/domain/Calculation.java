@@ -1,11 +1,14 @@
 package com.rodmccutcheon.pensionator.domain;
 
+import com.rodmccutcheon.pensionator.domain.exceptions.CalculationException;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "calculations")
@@ -27,13 +30,13 @@ public class Calculation {
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "calculation_id")
-    private List<Asset> assets;
+    private Set<Asset> assets;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "calculation_id")
-    private List<IncomeStream> incomeStreams;
+    private Set<IncomeStream> incomeStreams;
 
     @OneToOne(cascade = CascadeType.ALL)
     private AssetsTestPayment assetsTestPayment;
@@ -90,19 +93,19 @@ public class Calculation {
         this.client = client;
     }
 
-    public List<Asset> getAssets() {
+    public Set<Asset> getAssets() {
         return assets;
     }
 
-    public void setAssets(List<Asset> assets) {
+    public void setAssets(Set<Asset> assets) {
         this.assets = assets;
     }
 
-    public List<IncomeStream> getIncomeStreams() {
+    public Set<IncomeStream> getIncomeStreams() {
         return incomeStreams;
     }
 
-    public void setIncomeStreams(List<IncomeStream> incomeStreams) {
+    public void setIncomeStreams(Set<IncomeStream> incomeStreams) {
         this.incomeStreams = incomeStreams;
     }
 
@@ -172,7 +175,29 @@ public class Calculation {
     public void calculatePayment(IncomeTestThresholdGroup incomeTestThresholdGroup,
                                  AssetsTestThresholdGroup assetsTestThresholdGroup,
                                  DeemingRateGroup deemingRateGroup,
-                                 PaymentRateGroup paymentRateGroup) {
+                                 PaymentRateGroup paymentRateGroup) throws CalculationException {
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd MMMM yyy");
+        if (incomeTestThresholdGroup == null) {
+            throw new CalculationException("Missing reference data: income test threshold for date: "
+                    + simpleDateFormat.format(date)
+                    + ". Please change the calculation date, or enter the relevant reference values.");
+        }
+        if (assetsTestThresholdGroup == null) {
+            throw new CalculationException("Missing reference data: assets test threshold for date: "
+                    + simpleDateFormat.format(date)
+                    + ". Please change the calculation date, or enter the relevant reference values.");
+        }
+        if (deemingRateGroup == null) {
+            throw new CalculationException("Missing reference data: deeming rates for date: "
+                    + simpleDateFormat.format(date)
+                    + ". Please change the calculation date, or enter the relevant reference values.");
+        }
+        if (paymentRateGroup == null) {
+            throw new CalculationException("Missing reference data: payment rates for date: "
+                    + simpleDateFormat.format(date)
+                    + ". Please change the calculation date, or enter the relevant reference values.");
+        }
 
         calculateAssetsTestPayment(assetsTestThresholdGroup, paymentRateGroup);
         calculateIncomeTestPayment(incomeTestThresholdGroup, deemingRateGroup, paymentRateGroup);
