@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 
 @Controller
 @RequestMapping("/clients/{clientId}/calculations")
@@ -68,8 +67,8 @@ public class CalculationsController {
         Client client = clientService.getClientById(clientId);
         Calculation calculation = new Calculation();
         calculation.setClient(client);
-        calculation.setAssets(new LinkedHashSet<>(Arrays.asList(new Asset())));
-        calculation.setIncomeStreams(new LinkedHashSet<>(Arrays.asList(new IncomeStream())));
+        calculation.setAssets(new ArrayList<>());
+        calculation.setIncomeStreams(new ArrayList<>());
         model.addAttribute("calculation", calculation);
         model.addAttribute("assetTypes", assetTypesService.listAllAssetTypes());
         model.addAttribute("incomeStreamTypes", incomeStreamTypesService.listAllIncomeStreamTypes());
@@ -77,7 +76,7 @@ public class CalculationsController {
     }
 
     @PostMapping(params={"addAsset"})
-    public String addAsset(Calculation calculation, final BindingResult bindingResult, Model model) {
+    public String addAsset(Calculation calculation, Model model) {
         calculation.getAssets().add(new Asset());
         model.addAttribute("assetTypes", assetTypesService.listAllAssetTypes());
         model.addAttribute("incomeStreamTypes", incomeStreamTypesService.listAllIncomeStreamTypes());
@@ -85,7 +84,7 @@ public class CalculationsController {
     }
 
     @PostMapping(params={"removeAsset"})
-    public String removeAsset(Calculation calculation, final BindingResult bindingResult, Model model, final HttpServletRequest req) {
+    public String removeAsset(Calculation calculation, Model model, final HttpServletRequest req) {
         final Integer rowId = Integer.valueOf(req.getParameter("removeAsset"));
         calculation.getAssets().remove(rowId.intValue());
         model.addAttribute("assetTypes", assetTypesService.listAllAssetTypes());

@@ -26,6 +26,14 @@ public class DeemingRateGroup {
     @JoinColumn(name = "deeming_rate_group_id")
     private List<DeemingRate> deemingRates;
 
+    public DeemingRateGroup() { }
+
+    public DeemingRateGroup(Date startDate, Date endDate, List<DeemingRate> deemingRates) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.deemingRates = deemingRates;
+    }
+
     public long getId() {
         return id;
     }

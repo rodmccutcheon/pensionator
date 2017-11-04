@@ -31,6 +31,15 @@ public class DeemingRate {
     @Transient
     private BigDecimal deemedIncome;
 
+    public DeemingRate() { }
+
+    public DeemingRate(RelationshipStatus relationshipStatus, BigDecimal thresholdStart, BigDecimal thresholdEnd, BigDecimal deemingRate) {
+        this.relationshipStatus = relationshipStatus;
+        this.thresholdStart = thresholdStart;
+        this.thresholdEnd = thresholdEnd;
+        this.deemingRate = deemingRate;
+    }
+
     public long getId() {
         return id;
     }

@@ -6,9 +6,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "calculations")
@@ -32,17 +32,22 @@ public class Calculation {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "calculation_id")
-    private Set<Asset> assets;
+    private List<Asset> assets;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "calculation_id")
-    private Set<IncomeStream> incomeStreams;
+    private List<IncomeStream> incomeStreams;
 
     @OneToOne(cascade = CascadeType.ALL)
     private AssetsTestPayment assetsTestPayment;
 
     @OneToOne(cascade = CascadeType.ALL)
     private IncomeTestPayment incomeTestPayment;
+
+    public Calculation() {
+        assets = new ArrayList<>();
+        incomeStreams = new ArrayList<>();
+    }
 
     public long getId() {
         return id;
@@ -93,19 +98,25 @@ public class Calculation {
         this.client = client;
     }
 
-    public Set<Asset> getAssets() {
+    public List<Asset> getAssets() {
+        if (assets == null) {
+            assets = new ArrayList<>();
+        }
         return assets;
     }
 
-    public void setAssets(Set<Asset> assets) {
+    public void setAssets(List<Asset> assets) {
         this.assets = assets;
     }
 
-    public Set<IncomeStream> getIncomeStreams() {
+    public List<IncomeStream> getIncomeStreams() {
+        if (incomeStreams == null) {
+            incomeStreams = new ArrayList<>();
+        }
         return incomeStreams;
     }
 
-    public void setIncomeStreams(Set<IncomeStream> incomeStreams) {
+    public void setIncomeStreams(List<IncomeStream> incomeStreams) {
         this.incomeStreams = incomeStreams;
     }
 

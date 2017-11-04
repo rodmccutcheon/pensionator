@@ -15,6 +15,7 @@
         <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
 
         <h1>Calculation</h1>
+        <br/>
         <div th:if="${error}" class="alert alert-danger">
             <strong>Error!</strong> <span th:text="${error}"></span>
         </div>
@@ -25,7 +26,7 @@
                 <label class="col-sm-1 control-label">Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
-                        <input th:field="*{date}" type="text" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <input th:field="*{date}" th:required="required" type="text" class="form-control datepicker" data-format="dd MM yyyy" />
                         <div class="input-group-addon">
                             <a href="#">
                                 <i class="entypo-calendar"></i>
@@ -41,26 +42,26 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label"></label>
                     <div class="col-sm-2">
-                        <select th:field="*{assets[__${stat.index}__].assetType}" class="form-control">
-                            <option value="0" label="--- Select ---" />
+                        <select th:field="*{assets[__${stat.index}__].assetType}" th:required="required" class="form-control">
+                            <option value="" label="--- Select ---" />
                             <option th:each="assetType : ${assetTypes}" th:value="${assetType.id}" th:text="${assetType.name}"/>
                         </select>
                     </div>
                     <div class="col-sm-2">
-                        <input th:field="*{assets[__${stat.index}__].description}" type="text" class="form-control" placeholder="Description" />
+                        <input th:field="*{assets[__${stat.index}__].description}" th:required="required" type="text" class="form-control" placeholder="Description" />
                     </div>
                     <div class="col-sm-2">
-                        <input th:field="*{assets[__${stat.index}__].value}" type="text" class="form-control" placeholder="Value" />
+                        <input th:field="*{assets[__${stat.index}__].value}" th:required="required" type="text" class="form-control" placeholder="Value" />
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" name="removeAsset" th:value="${stat.index}" class="btn btn-default">Remove Asset</button>
+                        <button type="submit" name="removeAsset" th:value="${stat.index}" class="btn btn-default" formnovalidate="formnovalidate">Remove Asset</button>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label"></label>
                 <div class="col-sm-2">
-                    <button type="submit" name="addAsset" class="btn btn-default">Add Asset</button>
+                    <button type="submit" name="addAsset" class="btn btn-default" formnovalidate="formnovalidate">Add Asset</button>
                 </div>
             </div>
             <br/>
@@ -72,32 +73,32 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label"></label>
                     <div class="col-sm-2">
-                        <select th:field="*{incomeStreams[__${stat.index}__].incomeStreamType}" class="form-control">
-                            <option value="0" label="--- Select ---" />
+                        <select th:field="*{incomeStreams[__${stat.index}__].incomeStreamType}" th:required="required" class="form-control">
+                            <option value="" label="--- Select ---" />
                             <option th:each="incomeStreamType : ${incomeStreamTypes}" th:value="${incomeStreamType.id}" th:text="${incomeStreamType.name}"/>
                         </select>
                     </div>
                     <div class="col-sm-2">
-                        <input th:field="*{incomeStreams[__${stat.index}__].description}" type="text" class="form-control" placeholder="Description" />
+                        <input th:field="*{incomeStreams[__${stat.index}__].description}" th:required="required" type="text" class="form-control" placeholder="Description" />
                     </div>
                     <div class="col-sm-2">
-                        <input th:field="*{incomeStreams[__${stat.index}__].value}" type="text" class="form-control" placeholder="Value" />
+                        <input th:field="*{incomeStreams[__${stat.index}__].value}" th:required="required" type="text" class="form-control" placeholder="Value" />
                     </div>
                     <div class="col-sm-2">
-                        <button type="submit" name="removeIncomeStream" th:value="${stat.index}" class="btn btn-default">Remove Income Stream</button>
+                        <button type="submit" name="removeIncomeStream" th:value="${stat.index}" class="btn btn-default" formnovalidate="formnovalidate">Remove Income Stream</button>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label"></label>
                 <div class="col-sm-2">
-                    <button type="submit" name="addIncomeStream" class="btn btn-default">Add Income Stream</button>
+                    <button type="submit" name="addIncomeStream" class="btn btn-default" formnovalidate="formnovalidate">Add Income Stream</button>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-1 control-label">Comment</label>
                 <div class="col-sm-6">
-                    <textarea th:field="*{comment}" class="form-control" />
+                    <textarea th:field="*{comment}" th:required="required" class="form-control" />
                 </div>
             </div>
             <br/>
