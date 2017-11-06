@@ -20,6 +20,10 @@ public class IncomeStream {
     @NotNull
     private String description;
 
+    private String pensionType;
+
+    private BigDecimal deductibleAmount;
+
     @NotNull
     private BigDecimal value;
 
@@ -53,6 +57,22 @@ public class IncomeStream {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPensionType() {
+        return pensionType;
+    }
+
+    public void setPensionType(String pensionType) {
+        this.pensionType = pensionType;
+    }
+
+    public BigDecimal getDeductibleAmount() {
+        return deductibleAmount;
+    }
+
+    public void setDeductibleAmount(BigDecimal deductibleAmount) {
+        this.deductibleAmount = deductibleAmount;
     }
 
     public BigDecimal getValue() {

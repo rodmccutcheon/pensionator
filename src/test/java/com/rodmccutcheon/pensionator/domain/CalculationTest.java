@@ -4,10 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 
@@ -30,7 +27,7 @@ public class CalculationTest {
 
         IncomeStreamType accountBasedPension = new IncomeStreamType("Account based pension");
         IncomeStreamType annuity = new IncomeStreamType("Annuity");
-        List<IncomeStream> incomeStreams = new ArrayList<>(Arrays.asList(
+        Set<IncomeStream> incomeStreams = new LinkedHashSet<>(Arrays.asList(
                 new IncomeStream(accountBasedPension, "Russell ABP", BigDecimal.valueOf(4_250)),
                 new IncomeStream(annuity, "Challenger Lifetime Annuity", BigDecimal.valueOf(2_800))
         ));
@@ -55,7 +52,7 @@ public class CalculationTest {
     @Test
     public void givenACalculationWithNoIncomeStreams_whenSummingRegularIncome_thenZero() {
         Calculation calculation = new Calculation();
-        calculation.setIncomeStreams(new ArrayList<>());
+        calculation.setIncomeStreams(new LinkedHashSet<>());
         assertEquals(BigDecimal.ZERO, calculation.getRegularIncome());
     }
 

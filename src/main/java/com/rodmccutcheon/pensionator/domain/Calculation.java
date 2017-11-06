@@ -1,14 +1,14 @@
 package com.rodmccutcheon.pensionator.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rodmccutcheon.pensionator.domain.exceptions.CalculationException;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "calculations")
@@ -16,37 +16,46 @@ public class Calculation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private long id;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date date;
 
     private BigDecimal payment;
 
+    @JsonIgnore
     private String applicableTest;
 
+    @JsonIgnore
     private String comment;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "client_id")
+    @JsonIgnore
     private Client client;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "calculation_id")
+    @JsonIgnore
     private List<Asset> assets;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "calculation_id")
-    private List<IncomeStream> incomeStreams;
+    @JsonIgnore
+    private Set<IncomeStream> incomeStreams;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private AssetsTestPayment assetsTestPayment;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
     private IncomeTestPayment incomeTestPayment;
 
     public Calculation() {
         assets = new ArrayList<>();
-        incomeStreams = new ArrayList<>();
+        incomeStreams = new LinkedHashSet<>();
     }
 
     public long getId() {
@@ -109,14 +118,14 @@ public class Calculation {
         this.assets = assets;
     }
 
-    public List<IncomeStream> getIncomeStreams() {
+    public Set<IncomeStream> getIncomeStreams() {
         if (incomeStreams == null) {
-            incomeStreams = new ArrayList<>();
+            incomeStreams = new LinkedHashSet<>();
         }
         return incomeStreams;
     }
 
-    public void setIncomeStreams(List<IncomeStream> incomeStreams) {
+    public void setIncomeStreams(Set<IncomeStream> incomeStreams) {
         this.incomeStreams = incomeStreams;
     }
 
@@ -136,10 +145,12 @@ public class Calculation {
         this.incomeTestPayment = incomeTestPayment;
     }
 
+    @JsonIgnore
     public BigDecimal getTotalAssets() {
         return assets.stream().map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @JsonIgnore
     public BigDecimal getRegularIncome() {
         return incomeStreams
                 .stream()
@@ -148,6 +159,7 @@ public class Calculation {
     }
 
     // Financial assets are deemed to earn income.
+    @JsonIgnore
     public BigDecimal getDeemableAssets() {
         return assets
                 .stream()
@@ -156,6 +168,7 @@ public class Calculation {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @JsonIgnore
     public BigDecimal getDeemedIncome(DeemingRateGroup deemingRateGroup) {
         List<DeemingRate> deemingRates = deemingRateGroup.getDeemingRatesByRelationshipStatus(client.getRelationshipStatus());
         BigDecimal deemableAssets = getDeemableAssets();

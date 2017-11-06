@@ -3,6 +3,45 @@
 <head>
     <title>Pensionator</title>
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+    <script type="text/javascript" th:inline="javascript">
+
+        jQuery( document ).ready( function( $ ) {
+            var clientId = [[${client.id}]];
+
+            var calculationChart;
+
+            $.ajax({
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                url: '/clients/' + clientId + '/calculations',
+                success: function (json) {
+                    calculationChart = new Morris.Line({
+                        // ID of the element in which to draw the chart.
+                        element: 'calculationschart',
+                        // Chart data records -- each entry in this array corresponds to a point on
+                        // the chart.
+                        data: json,
+                        // The name of the data record attribute that contains x-values.
+                        xkey: 'date',
+                        // A list of names of data record attributes that contain y-values.
+                        ykeys: ['payment'],
+                        // Labels for the ykeys -- will be displayed when you hover over the
+                        // chart.
+                        labels: ['Payment'],
+                        preUnits: '$',
+                        smooth: false,
+                        resize: true
+                    });
+                }
+            });
+
+            $("a[href='#chart']").on('shown.bs.tab', function (e) {
+                calculationChart.redraw();
+                $(window).trigger('resize');
+            });
+        });
+    </script>
 </head>
 <body class="page-body" data-url="http://neon.dev">
 
@@ -48,88 +87,99 @@
                 </dl>
             </div>
         </div>
-                <div class="row">
-                    <ul class="nav nav-tabs">
-                        <li class="active">
-                            <a href="#calculations" data-toggle="tab">Calculations</a>
-                        </li>
-                        <li>
-                            <a href="#timeline" data-toggle="tab">Timeline</a>
-                        </li>
-                        <li>
-                            <a href="#chart" data-toggle="tab">Chart</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="calculations">
-                            <a th:href="${'/clients/' + client.id + '/calculations/new'}" class="btn btn-default btn-icon">
-                                New Calculation
-                                <i class="entypo-plus"></i>
-                            </a>
-                            <div th:if="${not #lists.isEmpty(client.calculations)}">
-                            <table class="table table-striped">
-                                <thead>
-                                    <th>Date</th>
-                                    <th>Payment</th>
-                                    <th>Applicable Test</th>
-                                    <th>Actions</th>
-                                </thead>
-                                <tbody>
-                                    <tr th:each="calculation : ${client.calculations}">
-                                        <td th:text="${#dates.format(calculation.date, 'dd MMMM yyyy')}"></td>
-                                        <td>$<span th:text="${#numbers.formatDecimal(calculation.payment, 0, 'COMMA', 2, 'POINT')}"></span></td>
-                                        <td th:text="${calculation.applicableTest}"></td>
-                                        <td>
-                                            <a th:href="${'/clients/' + client.id + '/calculations/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
-                                                <i class="entypo-eye"></i>
-                                                View
-                                            </a>
-                                            <a th:href="${'/clients/' + client.id + '/calculations/edit/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
-                                                <i class="entypo-pencil"></i>
-                                                Edit
-                                            </a>
-                                            <a th:href="${'/clients/' + client.id + '/calculations/clone/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
-                                                <i class="fa fa-clone"></i>
-                                                Duplicate
-                                            </a>
-                                            <a th:href="${'/clients/' + client.id + '/calculations/delete/' + calculation.id}" class="btn btn-danger btn-sm btn-icon icon-left">
-                                                <i class="entypo-cancel"></i>
-                                                Delete
-                                            </a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            </div>
-                        </div>
-                        <ul class="tab-pane" id="timeline">
-                            <ul class="cbp_tmtimeline">
-                                <li th:each="calculation : ${client.calculations}">
-                                    <time class="cbp_tmtime" datetime="2017-10-23T03:45">
-                                        <span th:text="${'$' + #numbers.formatDecimal(calculation.payment, 0, 'COMMA', 2, 'POINT')}"></span>
-                                        <span th:text="${#dates.format(calculation.date, 'dd MMMM yyyy')}"></span>
-                                    </time>
-                                    <div class="cbp_tmicon bg-success">
-                                        <i class="fa fa-calculator"></i>
-                                    </div>
-                                    <div class="cbp_tmlabel">
-                                        <h2>
-                                            <a href="#">John McCutcheon</a>
-                                            <span th:text="'calculated ' + ${client.firstName} + '\'s age pension entitlement'"></span>
-                                        </h2>
-                                        <p th:text="${calculation.comment}"></p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </ul>
-                        <div class="tab-pane" id="chart">
 
-                        </div>
+        <div class="row" role="tabpanel">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="active">
+                    <a href="#calculations" role="tab" data-toggle="tab">Calculations</a>
+                </li>
+                <li>
+                    <a href="#timeline" role="tab" data-toggle="tab">Timeline</a>
+                </li>
+                <li>
+                    <a id="chartTab" href="#chart" role="tab" data-toggle="tab">Chart</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="calculations">
+                    <a th:href="${'/clients/' + client.id + '/calculations/new'}" class="btn btn-default btn-icon">
+                        New Calculation
+                        <i class="entypo-plus"></i>
+                    </a>
+                    <div th:if="${not #lists.isEmpty(client.calculations)}">
+                        <table class="table table-striped">
+                            <thead>
+                            <th>Date</th>
+                            <th>Payment</th>
+                            <th>Applicable Test</th>
+                            <th>Actions</th>
+                            </thead>
+                            <tbody>
+                            <tr th:each="calculation : ${client.calculations}">
+                                <td th:text="${#dates.format(calculation.date, 'dd MMMM yyyy')}"></td>
+                                <td>$<span th:text="${#numbers.formatDecimal(calculation.payment, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                                <td th:text="${calculation.applicableTest}"></td>
+                                <td>
+                                    <a th:href="${'/clients/' + client.id + '/calculations/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
+                                        <i class="entypo-eye"></i>
+                                        View
+                                    </a>
+                                    <a th:href="${'/clients/' + client.id + '/calculations/edit/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
+                                        <i class="entypo-pencil"></i>
+                                        Edit
+                                    </a>
+                                    <a th:href="${'/clients/' + client.id + '/calculations/clone/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
+                                        <i class="fa fa-clone"></i>
+                                        Duplicate
+                                    </a>
+                                    <a th:href="${'/clients/' + client.id + '/calculations/delete/' + calculation.id}" class="btn btn-danger btn-sm btn-icon icon-left">
+                                        <i class="entypo-cancel"></i>
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+                <div class="tab-pane" id="timeline">
+                    <ul class="cbp_tmtimeline">
+                        <li th:each="calculation : ${client.calculations}">
+                            <time class="cbp_tmtime" datetime="2017-10-23T03:45">
+                                <span th:text="${'$' + #numbers.formatDecimal(calculation.payment, 0, 'COMMA', 2, 'POINT')}"></span>
+                                <span th:text="${#dates.format(calculation.date, 'dd MMMM yyyy')}"></span>
+                            </time>
+                            <div class="cbp_tmicon bg-success">
+                                <i class="fa fa-calculator"></i>
+                            </div>
+                            <div class="cbp_tmlabel">
+                                <h2>
+                                    <a href="#">John McCutcheon</a>
+                                    <span th:text="'calculated ' + ${client.firstName} + '\'s age pension entitlement'"></span>
+                                </h2>
+                                <p th:text="${calculation.comment}"></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane" id="chart">
+                    <div class="graph-container">
+                        <div class="caption">Age Pension Payment Over Time</div>
+                        <div id="calculationschart" class="graph" ></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 <!--/*/ <th:block th:include="fragments/footer :: foot"></th:block> /*/-->
+<script type="text/javascript" th:inline="javascript">
+
+
+
+
+</script>
 </body>
 </html>
 

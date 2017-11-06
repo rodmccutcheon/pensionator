@@ -4,6 +4,34 @@
  *
 */
 
-body {
-	
+#calculationschart {
+    height: 300px;
+}
+
+#calculationschart svg {
+    width:100%;
+}
+
+.graph-container {
+    padding: 30px;
+    border: 1px solid #ccc;
+    box-shadow: 1px 1px 2px #eee;
+    margin: 10px 0;
+    position: relative;
+}
+.graph-container::after {
+    display: block;
+    position: absolute;
+    left: -1px;
+    top: -1px;
+    border: 1px solid #ccc;
+    background-color: #eeeeee;
+    padding: 3px 8px;
+    font-size: 12px;
+}
+.graph-container .caption {
+    text-align: center;
+}
+.graph-container .graph {
+    height: 220px;
 }

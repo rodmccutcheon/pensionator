@@ -58,17 +58,29 @@ INSERT INTO age_rules (date_of_birth_start, date_of_birth_end, eligible_age) VAL
   ('1957-07-01', null, 67);
 
 INSERT INTO calculations (client_id, date, payment, applicable_test, comment) VALUES
-  (1, '2017-01-01', 546.94, 'Assets Test', 'Initial calculation'),
+  (1, '2017-04-01', 546.94, 'Assets Test', 'Initial calculation'),
   (1, '2017-06-14', 558.11, 'Assets Test', 'Purchased funeral bond'),
   (1, '2017-09-25', 365.39, 'Income Test', 'Started part time job');
 
 INSERT INTO assets (calculation_id, asset_type_id, description, value) VALUES
+  (1, 1, 'Centrelink value', 5000),
+  (1, 2, '2001 Honda CRV', 4000),
+  (1, 8, 'CBA shares', 300000),
+  (1, 9, 'Magellan Global Fund', 250200),
+  (2, 1, 'Centrelink value', 5000),
+  (2, 2, '2001 Honda CRV', 4000),
+  (2, 8, 'CBA shares', 300000),
+  (2, 9, 'Magellan Global Fund', 250200),
   (3, 1, 'Centrelink value', 5000),
   (3, 2, '2001 Honda CRV', 4000),
   (3, 8, 'CBA shares', 300000),
   (3, 9, 'Magellan Global Fund', 250200);
 
 INSERT INTO income_streams (calculation_id, income_stream_type_id, description, value) VALUES
+  (1, 2, 'Russell ABP', 4250),
+  (1, 4, 'Challenger Lifetime Annuity', 2800),
+  (2, 2, 'Russell ABP', 4250),
+  (2, 4, 'Challenger Lifetime Annuity', 2800),
   (3, 2, 'Russell ABP', 4250),
   (3, 4, 'Challenger Lifetime Annuity', 2800);
 
@@ -113,3 +125,7 @@ INSERT INTO deeming_rates (deeming_rate_group_id, relationship_status_id, thresh
   (2, 1, 50200, null, 3.25),
   (2, 2, 0, 83400, 1.75),
   (2, 2, 83400, null, 3.25);
+
+INSERT INTO users (username, password, name, email, enabled) VALUES
+  ('rodmcc', '123', 'Rod McCutcheon', 'rodmccutcheon@gmail.com', true),
+  ('johnmcc', '123', 'John McCutcheon', 'john@balwynfs.com.au', true);

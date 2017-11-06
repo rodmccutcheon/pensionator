@@ -3,6 +3,7 @@ package com.rodmccutcheon.pensionator.domain;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -17,6 +18,7 @@ public class AgeRule {
 
     private Date dateOfBirthEnd;
 
+    @NotNull
     private double eligibleAge;
 
     public long getId() {

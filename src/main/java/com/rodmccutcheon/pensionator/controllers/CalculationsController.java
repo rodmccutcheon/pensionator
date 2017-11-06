@@ -7,14 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/clients/{clientId}/calculations")
@@ -68,7 +67,7 @@ public class CalculationsController {
         Calculation calculation = new Calculation();
         calculation.setClient(client);
         calculation.setAssets(new ArrayList<>());
-        calculation.setIncomeStreams(new ArrayList<>());
+        calculation.setIncomeStreams(new LinkedHashSet<>());
         model.addAttribute("calculation", calculation);
         model.addAttribute("assetTypes", assetTypesService.listAllAssetTypes());
         model.addAttribute("incomeStreamTypes", incomeStreamTypesService.listAllIncomeStreamTypes());
@@ -154,6 +153,12 @@ public class CalculationsController {
         PaymentRateGroup p = paymentRateGroupsService.getPaymentRateGroupByDate(calculation.getDate());
         calculation.calculatePayment(i, a, d, p);
         return calculationService.saveCalculation(calculation);
+    }
+
+    @GetMapping
+    @ResponseBody
+    public Set<Calculation> list(@PathVariable Long clientId) {
+        return clientService.getClientById(clientId).getCalculations();
     }
 
 }

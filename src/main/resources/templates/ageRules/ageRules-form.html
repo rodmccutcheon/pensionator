@@ -22,7 +22,7 @@
                 <label class="col-sm-1 control-label">Start Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
-                        <input type="text" th:field="*{dateOfBirthStart}" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <input type="text" th:field="*{dateOfBirthStart}" th:required="required" class="form-control datepicker" data-format="dd MM yyyy" />
                         <div class="input-group-addon">
                             <a href="#">
                                 <i class="entypo-calendar"></i>
@@ -35,7 +35,7 @@
                 <label class="col-sm-1 control-label">End Date</label>
                 <div class="col-sm-2">
                     <div class="input-group">
-                        <input type="text" th:field="*{dateOfBirthEnd}" class="form-control datepicker" data-format="dd MM yyyy" />
+                        <input type="text" th:field="*{dateOfBirthEnd}" th:required="required" class="form-control datepicker" data-format="dd MM yyyy" />
                         <div class="input-group-addon">
                             <a href="#">
                                 <i class="entypo-calendar"></i>
@@ -48,7 +48,7 @@
             <div class="form-group">
                 <label class="col-sm-1 control-label">Eligible Age</label>
                 <div class="col-sm-2">
-                    <input type="text" th:field="*{eligibleAge}" class="form-control" />
+                    <input type="text" th:field="*{eligibleAge}" th:required="required" class="form-control" />
                 </div>
             </div>
 

@@ -3,6 +3,15 @@
 <head>
     <title>Pensionator</title>
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
+    <script type="text/javascript">
+        jQuery( document ).ready( function( $ ) {
+            $('#incomeStreams0\\.incomeStreamType').on('change', function() {
+                if (this.value == 2) {
+                   // show pension type div
+                }
+            });
+        });
+    </script>
 </head>
 <body class="page-body" data-url="http://neon.dev">
 
@@ -50,7 +59,7 @@
                     <div class="col-sm-2">
                         <input th:field="*{assets[__${stat.index}__].description}" th:required="required" type="text" class="form-control" placeholder="Description" />
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-1">
                         <input th:field="*{assets[__${stat.index}__].value}" th:required="required" type="text" class="form-control" placeholder="Value" />
                     </div>
                     <div class="col-sm-2">
@@ -81,7 +90,19 @@
                     <div class="col-sm-2">
                         <input th:field="*{incomeStreams[__${stat.index}__].description}" th:required="required" type="text" class="form-control" placeholder="Description" />
                     </div>
-                    <div class="col-sm-2">
+                    <div th:id="${'incomeStreams' + stat.index + '.pensionTypeDiv'}">
+                        <div class="col-sm-2">
+                            <select th:field="*{incomeStreams[__${stat.index}__].pensionType}" th:required="required" class="form-control">
+                                <option value="" label="--- Select ---" />
+                                <option value="Deductible Amount" label="Deductible Amount" />
+                                <option value="Deemed" label="Deemed" />
+                            </select>
+                        </div>
+                        <div class="col-sm-1">
+                            <input th:field="*{incomeStreams[__${stat.index}__].deductibleAmount}" th:required="required" type="text" class="form-control" placeholder="Value" />
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
                         <input th:field="*{incomeStreams[__${stat.index}__].value}" th:required="required" type="text" class="form-control" placeholder="Value" />
                     </div>
                     <div class="col-sm-2">
