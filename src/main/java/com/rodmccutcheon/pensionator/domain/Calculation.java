@@ -53,9 +53,15 @@ public class Calculation {
     @JsonIgnore
     private IncomeTestPayment incomeTestPayment;
 
+    @Transient
+    @JsonIgnore
+    private DeemedIncome deemedIncome;
+
     public Calculation() {
         assets = new ArrayList<>();
         incomeStreams = new LinkedHashSet<>();
+        deemedIncome = new DeemedIncome();
+        deemedIncome.setDeemedIncomeRows(new ArrayList<DeemedIncomeRow>());
     }
 
     public long getId() {
@@ -143,6 +149,14 @@ public class Calculation {
 
     public void setIncomeTestPayment(IncomeTestPayment incomeTestPayment) {
         this.incomeTestPayment = incomeTestPayment;
+    }
+
+    public DeemedIncome getDeemedIncome() {
+        return deemedIncome;
+    }
+
+    public void setDeemedIncome(DeemedIncome deemedIncome) {
+        this.deemedIncome = deemedIncome;
     }
 
     @JsonIgnore
@@ -263,7 +277,8 @@ public class Calculation {
             assetsTestPayment.setExcessAssets(excessAssets);
             BigDecimal paymentReduction = excessAssets.divide(BigDecimal.valueOf(1000)).multiply(assetsTestThreshold.getReductionRate());
             assetsTestPayment.setPaymentReduction(paymentReduction);
-            assetsTestPayment.setPayment(maximumPayment.subtract(paymentReduction));
+            BigDecimal payment = maximumPayment.subtract(paymentReduction);
+            assetsTestPayment.setPayment(payment.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : payment);
         }
     }
 
@@ -281,6 +296,29 @@ public class Calculation {
                 client.getRelationshipStatus());
         incomeTestPayment.setThreshold(incomeTestThreshold.getThreshold());
         List<DeemingRate> deemingRates = deemingRateGroup.getDeemingRatesByRelationshipStatus(client.getRelationshipStatus());
+        BigDecimal deemableAssets = getDeemableAssets();
+        for (DeemingRate deemingRate : deemingRates) {
+            if (deemableAssets.compareTo(deemingRate.getThresholdStart()) > 0) {
+                if (deemingRate.getThresholdEnd() != null && deemableAssets.compareTo(deemingRate.getThresholdEnd()) > 0) {
+
+                    DeemedIncomeRow d = new DeemedIncomeRow();
+                    BigDecimal deemableAmount = deemingRate.getThresholdEnd().subtract(deemingRate.getThresholdStart());
+
+                    d.setDeemableAmount(deemableAmount);
+                    d.setDeemingRate(deemingRate.getDeemingRate());
+                    d.setDeemedIncome(deemableAmount.multiply(deemingRate.getDeemingRate().divide(BigDecimal.valueOf(100))));
+                    deemedIncome.getDeemedIncomeRows().add(d);
+                } else {
+                    DeemedIncomeRow d = new DeemedIncomeRow();
+                    BigDecimal deemableAmount = deemableAssets.subtract(deemingRate.getThresholdStart());
+
+                    d.setDeemableAmount(deemableAmount);
+                    d.setDeemingRate(deemingRate.getDeemingRate());
+                    d.setDeemedIncome(deemableAmount.multiply(deemingRate.getDeemingRate().divide(BigDecimal.valueOf(100))));
+                    deemedIncome.getDeemedIncomeRows().add(d);
+                }
+            }
+        }
 
         BigDecimal totalIncome = getTotalIncome(deemingRateGroup);
         incomeTestPayment.setAssessableIncome(totalIncome);
@@ -294,7 +332,8 @@ public class Calculation {
             incomeTestPayment.setExcessIncome(excessIncome);
             BigDecimal paymentReduction = excessIncome.multiply(incomeTestThreshold.getReductionRate());
             incomeTestPayment.setPaymentReduction(paymentReduction);
-            incomeTestPayment.setPayment(maximumPayment.subtract(paymentReduction));
+            BigDecimal payment = maximumPayment.subtract(paymentReduction);
+            incomeTestPayment.setPayment(payment.compareTo(BigDecimal.ZERO) < 0 ? BigDecimal.ZERO : payment);
         }
     }
 }
