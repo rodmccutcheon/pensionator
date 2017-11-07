@@ -7,16 +7,19 @@ public class DeemedIncome {
 
     private List<DeemedIncomeRow> deemedIncomeRows;
 
-    class DeemedIncomeRow {
-        BigDecimal amount;
-        BigDecimal deemingRate;
-        BigDecimal deemedIncome;
+    public List<DeemedIncomeRow> getDeemedIncomeRows() {
+        return deemedIncomeRows;
+    }
 
-        DeemedIncomeRow(BigDecimal amount, BigDecimal deemingRate, BigDecimal deemedIncome) {
-            this.amount = amount;
-            this.deemingRate = deemingRate;
-            this.deemedIncome = deemedIncome;
-        }
+    public void setDeemedIncomeRows(List<DeemedIncomeRow> deemedIncomeRows) {
+        this.deemedIncomeRows = deemedIncomeRows;
+    }
+
+    public BigDecimal getTotal() {
+        return deemedIncomeRows
+                .stream()
+                .map(DeemedIncomeRow::getDeemedIncome)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 }

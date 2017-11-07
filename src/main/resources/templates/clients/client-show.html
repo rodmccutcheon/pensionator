@@ -117,7 +117,7 @@
                             <tbody>
                             <tr th:each="calculation : ${client.calculations}">
                                 <td th:text="${#dates.format(calculation.date, 'dd MMMM yyyy')}"></td>
-                                <td>$<span th:text="${#numbers.formatDecimal(calculation.payment, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                                <td>$<span th:text="${#numbers.formatDecimal(calculation.payment, 1, 'COMMA', 2, 'POINT')}"></span></td>
                                 <td th:text="${calculation.applicableTest}"></td>
                                 <td>
                                     <a th:href="${'/clients/' + client.id + '/calculations/' + calculation.id}" class="btn btn-default btn-sm btn-icon icon-left">
@@ -146,7 +146,7 @@
                     <ul class="cbp_tmtimeline">
                         <li th:each="calculation : ${client.calculations}">
                             <time class="cbp_tmtime" datetime="2017-10-23T03:45">
-                                <span th:text="${'$' + #numbers.formatDecimal(calculation.payment, 0, 'COMMA', 2, 'POINT')}"></span>
+                                <span th:text="${'$' + #numbers.formatDecimal(calculation.payment, 1, 'COMMA', 2, 'POINT')}"></span>
                                 <span th:text="${#dates.format(calculation.date, 'dd MMMM yyyy')}"></span>
                             </time>
                             <div class="cbp_tmicon bg-success">

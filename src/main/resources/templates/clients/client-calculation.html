@@ -44,12 +44,9 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-1 control-label">Assets</label>
-            </div>
             <div th:each="assets, stat : ${calculation.assets}">
                 <div class="form-group">
-                    <label class="col-sm-1 control-label"></label>
+                    <label class="col-sm-1 control-label"><span th:if="${stat.index == 0}">Assets</span></label>
                     <div class="col-sm-2">
                         <select th:field="*{assets[__${stat.index}__].assetType}" th:required="required" class="form-control">
                             <option value="" label="--- Select ---" />
@@ -68,19 +65,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-1 control-label"></label>
+                <label class="col-sm-1 control-label"><span th:if="${#lists.isEmpty(calculation.assets)}">Assets</span></label>
                 <div class="col-sm-2">
                     <button type="submit" name="addAsset" class="btn btn-default" formnovalidate="formnovalidate">Add Asset</button>
                 </div>
             </div>
             <br/>
-            <br/>
-            <div class="form-group">
-                <label class="col-sm-1 control-label">Income Streams</label>
-            </div>
             <div th:each="incomeStreams, stat : ${calculation.incomeStreams}">
                 <div class="form-group">
-                    <label class="col-sm-1 control-label"></label>
+                    <label class="col-sm-1 control-label"><span th:if="${stat.index == 0}">Income Streams</span></label>
                     <div class="col-sm-2">
                         <select th:field="*{incomeStreams[__${stat.index}__].incomeStreamType}" th:required="required" class="form-control">
                             <option value="" label="--- Select ---" />
@@ -111,7 +104,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-1 control-label"></label>
+                <label class="col-sm-1 control-label"><span th:if="${#lists.isEmpty(calculation.incomeStreams)}">Income Streams</span></label>
                 <div class="col-sm-2">
                     <button type="submit" name="addIncomeStream" class="btn btn-default" formnovalidate="formnovalidate">Add Income Stream</button>
                 </div>
