@@ -27,7 +27,7 @@ public class CalculationTest {
 
         IncomeStreamType accountBasedPension = new IncomeStreamType("Account based pension");
         IncomeStreamType annuity = new IncomeStreamType("Annuity");
-        Set<IncomeStream> incomeStreams = new LinkedHashSet<>(Arrays.asList(
+        List<IncomeStream> incomeStreams = new ArrayList<>(Arrays.asList(
                 new IncomeStream(accountBasedPension, "Russell ABP", BigDecimal.valueOf(4_250)),
                 new IncomeStream(annuity, "Challenger Lifetime Annuity", BigDecimal.valueOf(2_800))
         ));
@@ -52,7 +52,7 @@ public class CalculationTest {
     @Test
     public void givenACalculationWithNoIncomeStreams_whenSummingRegularIncome_thenZero() {
         Calculation calculation = new Calculation();
-        calculation.setIncomeStreams(new LinkedHashSet<>());
+        calculation.setIncomeStreams(new ArrayList<>());
         assertEquals(BigDecimal.ZERO, calculation.getRegularIncome());
     }
 

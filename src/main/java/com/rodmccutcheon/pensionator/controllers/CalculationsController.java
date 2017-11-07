@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Controller
@@ -66,8 +64,6 @@ public class CalculationsController {
         Client client = clientService.getClientById(clientId);
         Calculation calculation = new Calculation();
         calculation.setClient(client);
-        calculation.setAssets(new ArrayList<>());
-        calculation.setIncomeStreams(new LinkedHashSet<>());
         model.addAttribute("calculation", calculation);
         model.addAttribute("assetTypes", assetTypesService.listAllAssetTypes());
         model.addAttribute("incomeStreamTypes", incomeStreamTypesService.listAllIncomeStreamTypes());

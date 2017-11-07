@@ -154,8 +154,8 @@
             </tr>
             <tr>
                 <td>Benefit Reduction</td>
-                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.paymentReduction, 1, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
-                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.paymentReduction / 26, 1, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.paymentReduction * 26, 1, 'COMMA', 2, 'POINT') + ' (per annum)'}"></td>
+                <td th:text="${'$' + #numbers.formatDecimal(calculation.incomeTestPayment.paymentReduction, 1, 'COMMA', 2, 'POINT') + ' (per fortnight)'}"></td>
             </tr>
             <tr>
                 <td>Payment under Income Test</td>

@@ -40,12 +40,12 @@ public class Calculation {
     @JsonIgnore
     private List<Asset> assets;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "calculation_id")
     @JsonIgnore
-    private Set<IncomeStream> incomeStreams;
+    private List<IncomeStream> incomeStreams;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, optional = true)
     @JsonIgnore
     private AssetsTestPayment assetsTestPayment;
 
@@ -59,7 +59,7 @@ public class Calculation {
 
     public Calculation() {
         assets = new ArrayList<>();
-        incomeStreams = new LinkedHashSet<>();
+        incomeStreams = new ArrayList<>();
         deemedIncome = new DeemedIncome();
         deemedIncome.setDeemedIncomeRows(new ArrayList<DeemedIncomeRow>());
     }
@@ -124,14 +124,14 @@ public class Calculation {
         this.assets = assets;
     }
 
-    public Set<IncomeStream> getIncomeStreams() {
+    public List<IncomeStream> getIncomeStreams() {
         if (incomeStreams == null) {
-            incomeStreams = new LinkedHashSet<>();
+            incomeStreams = new ArrayList<>();
         }
         return incomeStreams;
     }
 
-    public void setIncomeStreams(Set<IncomeStream> incomeStreams) {
+    public void setIncomeStreams(List<IncomeStream> incomeStreams) {
         this.incomeStreams = incomeStreams;
     }
 
