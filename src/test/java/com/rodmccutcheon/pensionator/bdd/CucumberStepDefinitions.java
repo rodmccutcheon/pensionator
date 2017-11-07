@@ -5,13 +5,14 @@ import com.rodmccutcheon.pensionator.bdd.pageObjects.ClientPage;
 import com.rodmccutcheon.pensionator.bdd.pageObjects.ClientsPage;
 import com.rodmccutcheon.pensionator.bdd.pageObjects.DashboardPage;
 import com.rodmccutcheon.pensionator.bdd.pageObjects.LoginPage;
-import cucumber.api.PendingException;
 import cucumber.api.java8.En;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = PensionatorApplication.class)
@@ -46,8 +47,7 @@ public class CucumberStepDefinitions implements En {
         });
 
         Then("^I should see the duplicate calculation$", () -> {
-            // Write code here that turns the phrase above into concrete actions
-            throw new PendingException();
+            assertThat(clientPage.getCalculations("25 September 2017")).hasSize(2);
         });
     }
 
