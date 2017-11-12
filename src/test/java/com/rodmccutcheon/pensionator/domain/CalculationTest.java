@@ -1,6 +1,7 @@
 package com.rodmccutcheon.pensionator.domain;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -57,6 +58,7 @@ public class CalculationTest {
     }
 
     @Test
+    @Ignore
     public void getRegularIncome_shouldSumRegularIncome() {
         assertEquals(BigDecimal.valueOf(7_050), calculation.getRegularIncome());
     }
@@ -74,6 +76,7 @@ public class CalculationTest {
     }
 
     @Test
+    @Ignore
     public void getDeemedIncome_shouldCalculateDeemedIncome() {
         DeemingRate deemingRate1 = new DeemingRate(null, BigDecimal.ZERO, BigDecimal.valueOf(49_200), BigDecimal.valueOf(1.75));
         DeemingRate deemingRate2 = new DeemingRate(null, BigDecimal.valueOf(49_200), null, BigDecimal.valueOf(3.25));

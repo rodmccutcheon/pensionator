@@ -5,6 +5,7 @@ import com.rodmccutcheon.pensionator.bdd.pageObjects.ClientPage;
 import com.rodmccutcheon.pensionator.bdd.pageObjects.ClientsPage;
 import com.rodmccutcheon.pensionator.bdd.pageObjects.DashboardPage;
 import com.rodmccutcheon.pensionator.bdd.pageObjects.LoginPage;
+import cucumber.api.PendingException;
 import cucumber.api.java8.En;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,9 +47,25 @@ public class CucumberStepDefinitions implements En {
             clientPage.duplicateCalculation("25 September 2017");
         });
 
+        When("^I add a new single client$", () -> {
+            // Write code here that turns the phrase above into concrete actions
+            dashboardPage.navigateToClients();
+            clientsPage.addClient();
+        });
+
+        When("^I add a new couple$", () -> {
+            // Write code here that turns the phrase above into concrete actions
+            throw new PendingException();
+        });
+
         Then("^I should see the duplicate calculation$", () -> {
             assertThat(clientPage.getCalculations("25 September 2017")).hasSize(2);
         });
+
+        Then("^I should see the client listed$", () -> {    // Write code here that turns the phrase above into concrete actions
+            throw new PendingException();
+        });
+
     }
 
 }
