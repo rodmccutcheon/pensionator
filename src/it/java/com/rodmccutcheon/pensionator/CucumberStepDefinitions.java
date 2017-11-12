@@ -1,12 +1,12 @@
-package com.rodmccutcheon.pensionator.bdd;
+package com.rodmccutcheon.pensionator;
 
-import com.rodmccutcheon.pensionator.PensionatorApplication;
-import com.rodmccutcheon.pensionator.bdd.pageObjects.ClientPage;
-import com.rodmccutcheon.pensionator.bdd.pageObjects.ClientsPage;
-import com.rodmccutcheon.pensionator.bdd.pageObjects.DashboardPage;
-import com.rodmccutcheon.pensionator.bdd.pageObjects.LoginPage;
+import com.rodmccutcheon.pensionator.pageobjects.ClientPage;
+import com.rodmccutcheon.pensionator.pageobjects.ClientsPage;
+import com.rodmccutcheon.pensionator.pageobjects.DashboardPage;
+import com.rodmccutcheon.pensionator.pageobjects.LoginPage;
 import cucumber.api.PendingException;
 import cucumber.api.java8.En;
+import org.assertj.core.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -59,7 +59,7 @@ public class CucumberStepDefinitions implements En {
         });
 
         Then("^I should see the duplicate calculation$", () -> {
-            assertThat(clientPage.getCalculations("25 September 2017")).hasSize(2);
+            Assertions.assertThat(clientPage.getCalculations("25 September 2017")).hasSize(2);
         });
 
         Then("^I should see the client listed$", () -> {    // Write code here that turns the phrase above into concrete actions

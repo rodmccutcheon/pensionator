@@ -1,4 +1,4 @@
-package com.rodmccutcheon.pensionator.bdd.pageObjects;
+package com.rodmccutcheon.pensionator.pageobjects;
 
 import org.springframework.stereotype.Component;
 
