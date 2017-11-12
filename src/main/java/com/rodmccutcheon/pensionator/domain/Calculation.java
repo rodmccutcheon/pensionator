@@ -2,13 +2,19 @@ package com.rodmccutcheon.pensionator.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.rodmccutcheon.pensionator.domain.exceptions.CalculationException;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "calculations")
@@ -37,20 +43,26 @@ public class Calculation {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "calculation_id")
+    @Fetch(value = FetchMode.SUBSELECT)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     private List<Asset> assets;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "calculation_id")
+    @Fetch(value = FetchMode.SUBSELECT)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     @JsonIgnore
     private List<IncomeStream> incomeStreams;
 
     @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JsonIgnore
+    @JsonUnwrapped
     private AssetsTestPayment assetsTestPayment;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonUnwrapped
     private IncomeTestPayment incomeTestPayment;
 
     @Transient
@@ -168,7 +180,7 @@ public class Calculation {
     public BigDecimal getRegularIncome() {
         return incomeStreams
                 .stream()
-                .map(IncomeStream::getValue)
+                .map(IncomeStream::calculateAssessedIncome)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 

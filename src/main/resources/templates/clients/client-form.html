@@ -5,6 +5,16 @@
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
     <script type="text/javascript">
         jQuery( document ).ready( function( $ ) {
+            $('#client\\.relationshipStatus').each(function() {
+                if (this.value == 2 || this.value == 3) {
+                    $('#partner').show();
+                    $('#partner\\.firstName').prop('required', true);
+                    $('#partner\\.lastName').prop('required', true);
+                    $('#partner\\.gender').prop('required', true);
+                    $('#partner\\.dateOfBirth').prop('required', true);
+                }
+            });
+
             $('#client\\.relationshipStatus').on('change', function() {
                 $('#partner\\.relationshipStatus').val(this.value);
                 if (this.value == 2 || this.value == 3) {

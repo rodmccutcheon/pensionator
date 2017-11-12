@@ -53,13 +53,13 @@
                     <thead>
                     <th>Income Stream Type</th>
                     <th>Description</th>
-                    <th>Value</th>
+                    <th>Assessed Income</th>
                     </thead>
                     <tbody>
                     <tr th:each="incomeStream : ${calculation.incomeStreams}">
                         <td th:text="${incomeStream.incomeStreamType.name}"></td>
                         <td th:text="${incomeStream.description}"></td>
-                        <td>$<span th:text="${#numbers.formatDecimal(incomeStream.value, 1, 'COMMA', 2, 'POINT')}"></span></td>
+                        <td>$<span th:text="${#numbers.formatDecimal(incomeStream.assessedIncome, 1, 'COMMA', 2, 'POINT')}"></span></td>
                     </tr>
                     <tr>
                         <td><strong>Total</strong></td>

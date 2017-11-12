@@ -1,9 +1,13 @@
-Feature: Duplicate Calculation
+Feature: Client
   As a user
-  I want to be able to duplicate calculations to save time (not have to re-enter assets and income streams)
+  I want to be able to add new clients and edit existing clients
 
-  Scenario: Duplicate Calculation
+  Scenario: Add Single Client
     Given I login in as a valid user
-    And I view a user with calculations
-    When I duplicate a calculation
-    Then I should see the duplicate calculation
+    When I add a new single client
+    Then I should see the client listed
+
+  Scenario: Add Couple
+    Given I login in as a valid user
+    When I add a new couple
+    Then I should see the client listed

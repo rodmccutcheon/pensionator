@@ -1,5 +1,8 @@
 package com.rodmccutcheon.pensionator.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
@@ -9,18 +12,25 @@ public class IncomeTestPayment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @JsonIgnore
     private long id;
 
+    @JsonIgnore
     private BigDecimal maximumPayment;
 
+    @JsonIgnore
     private BigDecimal assessableIncome;
 
+    @JsonIgnore
     private BigDecimal threshold;
 
+    @JsonIgnore
     private BigDecimal excessIncome;
 
+    @JsonIgnore
     private BigDecimal paymentReduction;
 
+    @JsonProperty("incomeTestPayment")
     private BigDecimal payment;
 
     public long getId() {

@@ -4,13 +4,30 @@
     <title>Pensionator</title>
     <!--/*/ <th:block th:include="fragments/header :: head"></th:block> /*/-->
     <script type="text/javascript">
+        /*<![CDATA[*/
         jQuery( document ).ready( function( $ ) {
-            $('#incomeStreams0\\.incomeStreamType').on('change', function() {
-                if (this.value == 2) {
-                   // show pension type div
-                }
+            $('.incomeStreamType').each(function() {
+                dynamicallyLoadIncomeStreamFields(this);
             });
+
+            $('.incomeStreamType').on('change', function() {
+                dynamicallyLoadIncomeStreamFields(this);
+            });
+
         });
+
+        function dynamicallyLoadIncomeStreamFields(incomeStreamTypeSelect) {
+            // If the income stream is an account based pension started pre 1 January 2015 it is deemed
+            if (incomeStreamTypeSelect.value == 2) {
+                $(incomeStreamTypeSelect).parent().parent().find(".deemedABP").show();
+                $(incomeStreamTypeSelect).parent().parent().find(".deemedABP input").prop('required', true)
+            } else {
+                $(incomeStreamTypeSelect).parent().parent().find(".deemedABP").hide();
+                $(incomeStreamTypeSelect).parent().parent().find(".deemedABP input").val('');
+                $(incomeStreamTypeSelect).parent().parent().find(".deemedABP input").prop('required', false)
+            }
+        }
+        /*]]>*/
     </script>
 </head>
 <body class="page-body" data-url="http://neon.dev">
@@ -47,7 +64,7 @@
             <div th:each="assets, stat : ${calculation.assets}">
                 <div class="form-group">
                     <label class="col-sm-1 control-label"><span th:if="${stat.index == 0}">Assets</span></label>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <select th:field="*{assets[__${stat.index}__].assetType}" th:required="required" class="form-control">
                             <option value="" label="--- Select ---" />
                             <option th:each="assetType : ${assetTypes}" th:value="${assetType.id}" th:text="${assetType.name}"/>
@@ -56,11 +73,11 @@
                     <div class="col-sm-2">
                         <input th:field="*{assets[__${stat.index}__].description}" th:required="required" type="text" class="form-control" placeholder="Description" />
                     </div>
-                    <div class="col-sm-1">
+                    <div class="col-sm-2">
                         <input th:field="*{assets[__${stat.index}__].value}" th:required="required" type="text" class="form-control" placeholder="Value" />
                     </div>
-                    <div class="col-sm-2">
-                        <button type="submit" name="removeAsset" th:value="${stat.index}" class="btn btn-default" formnovalidate="formnovalidate">Remove Asset</button>
+                    <div class="col-sm-1">
+                        <button type="submit" name="removeAsset" th:value="${stat.index}" class="btn btn-default" formnovalidate="formnovalidate">Remove</button>
                     </div>
                 </div>
             </div>
@@ -74,8 +91,8 @@
             <div th:each="incomeStreams, stat : ${calculation.incomeStreams}">
                 <div class="form-group">
                     <label class="col-sm-1 control-label"><span th:if="${stat.index == 0}">Income Streams</span></label>
-                    <div class="col-sm-2">
-                        <select th:field="*{incomeStreams[__${stat.index}__].incomeStreamType}" th:required="required" class="form-control">
+                    <div class="col-sm-3">
+                        <select th:field="*{incomeStreams[__${stat.index}__].incomeStreamType}" th:required="required" class="form-control incomeStreamType">
                             <option value="" label="--- Select ---" />
                             <option th:each="incomeStreamType : ${incomeStreamTypes}" th:value="${incomeStreamType.id}" th:text="${incomeStreamType.name}"/>
                         </select>
@@ -83,23 +100,19 @@
                     <div class="col-sm-2">
                         <input th:field="*{incomeStreams[__${stat.index}__].description}" th:required="required" type="text" class="form-control" placeholder="Description" />
                     </div>
-                    <div th:id="${'incomeStreams' + stat.index + '.pensionTypeDiv'}">
-                        <div class="col-sm-2">
-                            <select th:field="*{incomeStreams[__${stat.index}__].pensionType}" th:required="required" class="form-control">
-                                <option value="" label="--- Select ---" />
-                                <option value="Deductible Amount" label="Deductible Amount" />
-                                <option value="Deemed" label="Deemed" />
-                            </select>
+                    <div class="deemedABP">
+                        <div class="col-sm-1">
+                            <input th:field="*{incomeStreams[__${stat.index}__].deductibleAmount}" type="text" class="form-control" placeholder="DA" data-toggle="tooltip" data-placement="top" data-original-title="Deductible Amount" />
                         </div>
                         <div class="col-sm-1">
-                            <input th:field="*{incomeStreams[__${stat.index}__].deductibleAmount}" th:required="required" type="text" class="form-control" placeholder="Value" />
+                            <input th:field="*{incomeStreams[__${stat.index}__].annualPayment}" type="text" class="form-control" placeholder="Payment" data-toggle="tooltip" data-placement="top" data-original-title="Annual Payment" />
                         </div>
                     </div>
                     <div class="col-sm-1">
-                        <input th:field="*{incomeStreams[__${stat.index}__].value}" th:required="required" type="text" class="form-control" placeholder="Value" />
+                        <input th:field="*{incomeStreams[__${stat.index}__].assessedIncome}" type="text" class="form-control" placeholder="Income" data-toggle="tooltip" data-placement="top" data-original-title="Assessable Income" />
                     </div>
-                    <div class="col-sm-2">
-                        <button type="submit" name="removeIncomeStream" th:value="${stat.index}" class="btn btn-default" formnovalidate="formnovalidate">Remove Income Stream</button>
+                    <div class="col-sm-1">
+                        <button type="submit" name="removeIncomeStream" th:value="${stat.index}" class="btn btn-default" formnovalidate="formnovalidate">Remove</button>
                     </div>
                 </div>
             </div>

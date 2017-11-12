@@ -2,6 +2,7 @@ package com.rodmccutcheon.pensionator.services;
 
 import com.rodmccutcheon.pensionator.domain.Calculation;
 import com.rodmccutcheon.pensionator.repositories.CalculationRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +28,13 @@ public class CalculationServiceImpl implements CalculationService {
 
     @Override
     public Calculation cloneCalculation(Calculation calculation) {
+        Calculation c2 = new Calculation();
+        BeanUtils.copyProperties(calculation, c2);
         calculationRepository.detachCalculation(calculation);
         calculation.setId(0);
         calculation.getAssets().stream().forEach(a -> a.setId(0));
         calculation.getIncomeStreams().stream().forEach(i -> i.setId(0));
-        return calculationRepository.save(calculation);
+        return calculationRepository.save(c2);
     }
 
     @Override

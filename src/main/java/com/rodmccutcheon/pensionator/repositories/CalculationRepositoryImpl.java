@@ -15,5 +15,7 @@ public class CalculationRepositoryImpl implements CalculationRepositoryCustom {
     @Override
     public void detachCalculation(Calculation calculation) {
         entityManager.detach(calculation);
+        //calculation.getAssets().stream().forEach(a -> entityManager.detach(a);
+        //entityManager.detach(calculation.getAssets());
     }
 }

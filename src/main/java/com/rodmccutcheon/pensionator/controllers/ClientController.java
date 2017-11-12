@@ -72,7 +72,10 @@ public class ClientController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        model.addAttribute("client", clientService.getClientById(id));
+        Couple couple = new Couple();
+        couple.setClient(clientService.getClientById(id));
+        couple.setPartner(couple.getClient().getPartner());
+        model.addAttribute("couple", couple);
         model.addAttribute("relationshipStatuses", relationshipStatusService.listAllRelationshipStatuses());
         model.addAttribute("homeownerStatuses", homeownerStatusesService.listAllHomeownerStatuses());
         return "clients/client-form";

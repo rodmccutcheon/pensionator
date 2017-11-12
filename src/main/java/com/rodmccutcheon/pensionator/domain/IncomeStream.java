@@ -20,19 +20,27 @@ public class IncomeStream {
     @NotNull
     private String description;
 
-    private String pensionType;
-
     private BigDecimal deductibleAmount;
 
-    @NotNull
-    private BigDecimal value;
+    private BigDecimal annualPayment;
+
+    private BigDecimal currentBalance;
+
+    private BigDecimal assessedIncome;
 
     public IncomeStream() { }
 
-    public IncomeStream(IncomeStreamType incomeStreamType, String description, BigDecimal value) {
+    public IncomeStream(IncomeStreamType incomeStreamType, String description, BigDecimal deductibleAmount, BigDecimal annualPayment) {
         this.incomeStreamType = incomeStreamType;
         this.description = description;
-        this.value = value;
+        this.deductibleAmount = deductibleAmount;
+        this.annualPayment = annualPayment;
+    }
+
+    public IncomeStream(IncomeStreamType incomeStreamType, String description, BigDecimal currentBalance) {
+        this.incomeStreamType = incomeStreamType;
+        this.description = description;
+        this.currentBalance = currentBalance;
     }
 
     public long getId() {
@@ -59,14 +67,6 @@ public class IncomeStream {
         this.description = description;
     }
 
-    public String getPensionType() {
-        return pensionType;
-    }
-
-    public void setPensionType(String pensionType) {
-        this.pensionType = pensionType;
-    }
-
     public BigDecimal getDeductibleAmount() {
         return deductibleAmount;
     }
@@ -75,11 +75,37 @@ public class IncomeStream {
         this.deductibleAmount = deductibleAmount;
     }
 
-    public BigDecimal getValue() {
-        return value;
+    public BigDecimal getAnnualPayment() {
+        return annualPayment;
     }
 
-    public void setValue(BigDecimal value) {
-        this.value = value;
+    public void setAnnualPayment(BigDecimal annualPayment) {
+        this.annualPayment = annualPayment;
+    }
+
+    public BigDecimal getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(BigDecimal currentBalance) {
+        this.currentBalance = currentBalance;
+    }
+
+    public BigDecimal getAssessedIncome() {
+        return assessedIncome;
+    }
+
+    public void setAssessedIncome(BigDecimal assessedIncome) {
+        this.assessedIncome = assessedIncome;
+    }
+
+    public BigDecimal calculateAssessedIncome() {
+        if (incomeStreamType.getId() == 2) {
+            assessedIncome = annualPayment.compareTo(deductibleAmount) > 0 ? annualPayment.subtract(deductibleAmount) : BigDecimal.ZERO;
+        } else if (incomeStreamType.getId() == 3) {
+            assessedIncome = BigDecimal.ZERO;
+        }
+        return assessedIncome;
+
     }
 }
