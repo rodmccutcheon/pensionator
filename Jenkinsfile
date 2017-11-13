@@ -8,13 +8,11 @@ node {
     stage('compile') {
         checkout scm
         commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
-        //sh "git rev-parse --short HEAD > .git/commit-id"
-        //commit_id = readFile('./git/commit-id').trim()
         echo commit_id
     }
 
     stage('test') {
-
+        sh "docker-compose up -d"
     }
 
     stage('docker build/push') {
