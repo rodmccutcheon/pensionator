@@ -1,6 +1,10 @@
 node {
     def commit_id
 
+    stage('configure') {
+        env.PATH = "${tool 'Maven-3.5.2'}/bin:${env.PATH}"
+    }
+
     stage('compile') {
         checkout scm
         sh "git rev-parse --short HEAD > .git/commit-id"
