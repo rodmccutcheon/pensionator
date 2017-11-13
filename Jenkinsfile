@@ -1,4 +1,20 @@
-node {
+pipeline {
+    agent {
+        docker {
+            image 'maven:3-alpine'
+            args '-v /root/.m2:/root/.m2'
+        }
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn -B -DskipTests clean package'
+            }
+        }
+    }
+}
+
+/*node {
     def commit_id
 
     stage('configure') {
@@ -6,7 +22,10 @@ node {
     }
 
     stage('compile') {
+        //git 'https://github.com/rodmccutcheon/pensionator.git'
+        // shortcut to checkout from where this Jenkinsfile is hosted
         checkout scm
+
         commit_id = sh(script: 'git rev-parse --short HEAD', returnStdout: true)
         echo commit_id
     }
@@ -20,4 +39,4 @@ node {
             def app = docker.build("rodmccutcheon/pensionator:${commit_id}", '.').push()
         }
     }
-}
+}*/
