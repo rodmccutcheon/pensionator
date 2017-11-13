@@ -1,6 +1,6 @@
-package com.rodmccutcheon.pensionator.pageobjects;
+package com.rodmccutcheon.pensionator.bdd.pageobjects;
 
-import com.rodmccutcheon.pensionator.DriverFactory;
+import com.rodmccutcheon.pensionator.bdd.DriverFactory;
 import org.openqa.selenium.By;
 import org.springframework.stereotype.Component;
 

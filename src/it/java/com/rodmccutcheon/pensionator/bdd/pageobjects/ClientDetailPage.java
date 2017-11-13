@@ -1,6 +1,6 @@
-package com.rodmccutcheon.pensionator.pageobjects;
+package com.rodmccutcheon.pensionator.bdd.pageobjects;
 
-import com.rodmccutcheon.pensionator.DriverFactory;
+import com.rodmccutcheon.pensionator.bdd.DriverFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ClientPage extends AbstractPage {
+public class ClientDetailPage extends AbstractPage {
 
     public void duplicateCalculation(final String date) {
         DriverFactory.getInstance().getDriver().findElement(By.xpath("//tr/td[contains(text(), '" + date + "')]/../td[4]/a[3]")).click();

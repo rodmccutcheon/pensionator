@@ -1,9 +1,10 @@
-package com.rodmccutcheon.pensionator;
+package com.rodmccutcheon.pensionator.bdd;
 
-import com.rodmccutcheon.pensionator.pageobjects.ClientPage;
-import com.rodmccutcheon.pensionator.pageobjects.ClientsPage;
-import com.rodmccutcheon.pensionator.pageobjects.DashboardPage;
-import com.rodmccutcheon.pensionator.pageobjects.LoginPage;
+import com.rodmccutcheon.pensionator.bdd.config.CucumberConfig;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.ClientDetailPage;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.ClientsPage;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.DashboardPage;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.LoginPage;
 import cucumber.api.PendingException;
 import cucumber.api.java8.En;
 import org.assertj.core.api.Assertions;
@@ -13,10 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = PensionatorApplication.class)
+@ContextConfiguration(classes = CucumberConfig.class)
 @SpringBootTest
 public class CucumberStepDefinitions implements En {
 
@@ -30,7 +29,7 @@ public class CucumberStepDefinitions implements En {
     private ClientsPage clientsPage;
 
     @Autowired
-    private ClientPage clientPage;
+    private ClientDetailPage clientDetailPage;
 
     public CucumberStepDefinitions() {
         Given("^I login in as a valid user$", () -> {
@@ -44,7 +43,7 @@ public class CucumberStepDefinitions implements En {
         });
 
         When("^I duplicate a calculation$", () -> {
-            clientPage.duplicateCalculation("25 September 2017");
+            clientDetailPage.duplicateCalculation("25 September 2017");
         });
 
         When("^I add a new single client$", () -> {
@@ -59,7 +58,7 @@ public class CucumberStepDefinitions implements En {
         });
 
         Then("^I should see the duplicate calculation$", () -> {
-            Assertions.assertThat(clientPage.getCalculations("25 September 2017")).hasSize(2);
+            Assertions.assertThat(clientDetailPage.getCalculations("25 September 2017")).hasSize(2);
         });
 
         Then("^I should see the client listed$", () -> {    // Write code here that turns the phrase above into concrete actions

@@ -1,4 +1,4 @@
-package com.rodmccutcheon.pensionator;
+package com.rodmccutcheon.pensionator.bdd;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
