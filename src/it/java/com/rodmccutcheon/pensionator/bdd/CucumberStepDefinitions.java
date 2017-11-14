@@ -1,10 +1,7 @@
 package com.rodmccutcheon.pensionator.bdd;
 
 import com.rodmccutcheon.pensionator.bdd.config.CucumberConfig;
-import com.rodmccutcheon.pensionator.bdd.pageobjects.ClientDetailPage;
-import com.rodmccutcheon.pensionator.bdd.pageobjects.ClientsPage;
-import com.rodmccutcheon.pensionator.bdd.pageobjects.DashboardPage;
-import com.rodmccutcheon.pensionator.bdd.pageobjects.LoginPage;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.*;
 import cucumber.api.PendingException;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
@@ -33,13 +30,16 @@ public class CucumberStepDefinitions implements En {
     private LoginPage loginPage;
 
     @Autowired
-    private DashboardPage dashboardPage;
+    private SidebarPageFragment sidebarPageFragment;
 
     @Autowired
     private ClientsPage clientsPage;
 
     @Autowired
     private ClientDetailPage clientDetailPage;
+
+    @Autowired
+    private EditClientPage editClientPage;
 
     @Autowired
     private DataSource datasource;
@@ -52,17 +52,17 @@ public class CucumberStepDefinitions implements En {
 
     @After
     public void logout() {
-        dashboardPage.logout();
+        sidebarPageFragment.logout();
     }
 
     public CucumberStepDefinitions() {
-        Given("^I login in as a valid user$", () -> {
+        Given("^I login as a valid user$", () -> {
             loginPage.toPage();
             loginPage.doLogin("rod", "password123");
         });
 
         Given("^I view a user with calculations$", () -> {
-            dashboardPage.navigateToClients();
+            sidebarPageFragment.navigateToClients();
             clientsPage.viewClient("Max Power");
         });
 
@@ -72,8 +72,9 @@ public class CucumberStepDefinitions implements En {
 
         When("^I add a new single client$", () -> {
             // Write code here that turns the phrase above into concrete actions
-            dashboardPage.navigateToClients();
-            clientsPage.addClient();
+            sidebarPageFragment.navigateToClients();
+            clientsPage.navigateToEditClientPage();
+            editClientPage.saveClient();
         });
 
         When("^I add a new couple$", () -> {
@@ -86,11 +87,12 @@ public class CucumberStepDefinitions implements En {
         });
 
         Then("^I should see the client listed$", () -> {    // Write code here that turns the phrase above into concrete actions
-            throw new PendingException();
+            sidebarPageFragment.navigateToClients();
+            assertThat(clientsPage.getClients()).contains("Gary Newton");
         });
 
         Given("^I view the list of clients$", () -> {
-            dashboardPage.navigateToClients();
+            sidebarPageFragment.navigateToClients();
         });
 
         When("^I delete a client$", () -> {

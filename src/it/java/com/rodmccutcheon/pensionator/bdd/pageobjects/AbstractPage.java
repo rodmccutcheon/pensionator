@@ -8,7 +8,7 @@ import java.util.List;
 
 public abstract class AbstractPage {
 
-    public WebDriver webDriver;
+    protected WebDriver webDriver;
 
     public AbstractPage(WebDriver webDriver) {
         this.webDriver = webDriver;

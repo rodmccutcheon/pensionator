@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DashboardPage extends AbstractPage {
+public class SidebarPageFragment extends AbstractPage {
 
     @FindBy(id = "clients")
     private WebElement clientsMenuItem;
@@ -17,7 +17,7 @@ public class DashboardPage extends AbstractPage {
     private WebElement logoutButton;
 
     @Autowired
-    public DashboardPage(WebDriver webDriver) {
+    public SidebarPageFragment(WebDriver webDriver) {
         super(webDriver);
         PageFactory.initElements(webDriver, this);
     }
