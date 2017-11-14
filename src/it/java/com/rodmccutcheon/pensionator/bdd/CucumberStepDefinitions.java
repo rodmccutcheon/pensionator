@@ -6,17 +6,27 @@ import com.rodmccutcheon.pensionator.bdd.pageobjects.ClientsPage;
 import com.rodmccutcheon.pensionator.bdd.pageobjects.DashboardPage;
 import com.rodmccutcheon.pensionator.bdd.pageobjects.LoginPage;
 import cucumber.api.PendingException;
+import cucumber.api.java.After;
+import cucumber.api.java.Before;
 import cucumber.api.java8.En;
-import org.assertj.core.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = CucumberConfig.class)
 @SpringBootTest
+@Sql(scripts = "test-data.sql")
 public class CucumberStepDefinitions implements En {
 
     @Autowired
@@ -30,6 +40,20 @@ public class CucumberStepDefinitions implements En {
 
     @Autowired
     private ClientDetailPage clientDetailPage;
+
+    @Autowired
+    private DataSource datasource;
+
+    @Before
+    public void setup() throws SQLException {
+        System.out.println("Cleaning up database");
+        ScriptUtils.executeSqlScript(datasource.getConnection(), new ClassPathResource("test-data.sql"));
+    }
+
+    @After
+    public void logout() {
+        dashboardPage.logout();
+    }
 
     public CucumberStepDefinitions() {
         Given("^I login in as a valid user$", () -> {
@@ -58,11 +82,23 @@ public class CucumberStepDefinitions implements En {
         });
 
         Then("^I should see the duplicate calculation$", () -> {
-            Assertions.assertThat(clientDetailPage.getCalculations("25 September 2017")).hasSize(2);
+            assertThat(clientDetailPage.getCalculations("25 September 2017")).hasSize(2);
         });
 
         Then("^I should see the client listed$", () -> {    // Write code here that turns the phrase above into concrete actions
             throw new PendingException();
+        });
+
+        Given("^I view the list of clients$", () -> {
+            dashboardPage.navigateToClients();
+        });
+
+        When("^I delete a client$", () -> {
+            clientsPage.deleteClient("Ned Flanders");
+        });
+
+        Then("^I should no longer see the client listed$", () -> {
+            assertThat(clientsPage.getClients()).doesNotContain("Ned Flanders");
         });
 
     }

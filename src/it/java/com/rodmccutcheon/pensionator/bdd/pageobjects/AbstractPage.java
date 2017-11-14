@@ -1,19 +1,20 @@
 package com.rodmccutcheon.pensionator.bdd.pageobjects;
 
-import com.rodmccutcheon.pensionator.bdd.DriverFactory;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public abstract class AbstractPage {
 
-    public void navigate(final String value) {
+    public WebDriver webDriver;
+
+    public AbstractPage(WebDriver webDriver) {
+        this.webDriver = webDriver;
+    }
+
+    /*public void navigate(final String value) {
         DriverFactory.getInstance().getDriver().navigate().to(value);
     }
 
@@ -29,11 +30,10 @@ public abstract class AbstractPage {
         final WebElement button = DriverFactory.getInstance().getDriver().findElement(By.id(id));
         final JavascriptExecutor executor = (JavascriptExecutor) DriverFactory.getInstance().getDriver();
         executor.executeScript("arguments[0].click();", button);
-    }
+    }*/
 
     protected boolean hasErrors() {
-        final List<WebElement> errors = DriverFactory.getInstance().getDriver()
-                .findElements(By.className("error"));
+        final List<WebElement> errors = webDriver.findElements(By.className("error"));
         return (errors.size() > 0) && errors.get(0).isDisplayed();
     }
 }

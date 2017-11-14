@@ -54,7 +54,7 @@
         <!--/*/ <th:block th:include="fragments/profile :: prof"></th:block> /*/-->
         <div th:switch="${client.partner == null}">
             <h1 th:case="${true}" th:text="${client.firstName + ' ' + client.lastName}"></h1>
-            <h1 th:case="${false}" th:text="${client.firstName + ' &amp; ' + client.partner.firstName + ' ' + client.lastName}"></h1>
+            <h1 th:case="${false}" th:text="${client.lastName == client.partner.lastName ? client.firstName + ' &amp; ' + client.partner.firstName + ' ' + client.lastName : client.firstName + ' ' + client.lastName + ' &amp; ' + client.partner.firstName + ' ' + client.partner.lastName}"></h1>
         </div>
         <br/>
         <div th:if="${error}" class="alert alert-danger">
