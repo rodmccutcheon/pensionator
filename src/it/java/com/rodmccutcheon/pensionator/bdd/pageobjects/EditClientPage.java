@@ -1,5 +1,6 @@
 package com.rodmccutcheon.pensionator.bdd.pageobjects;
 
+import com.rodmccutcheon.pensionator.domain.Client;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -30,8 +31,20 @@ public class EditClientPage extends AbstractPage {
     @FindBy(id = "client.homeownerStatus")
     private WebElement homeownerStatusInput;
 
+    @FindBy(id = "partner.firstName")
+    private WebElement partnerFirstNameInput;
+
+    @FindBy(id = "partner.lastName")
+    private WebElement partnerLastNameInput;
+
+    @FindBy(id = "partner.gender")
+    private WebElement partnerGenderInput;
+
+    @FindBy(id = "partner.dateOfBirth")
+    private WebElement partnerDateOfBirthInput;
+
     @FindBy(id = "save-client")
-    private WebElement createButton;
+    private WebElement saveButton;
 
     @Autowired
     public EditClientPage(WebDriver webDriver) {
@@ -39,14 +52,28 @@ public class EditClientPage extends AbstractPage {
         PageFactory.initElements(webDriver, this);
     }
 
-    public void saveClient() {
-        firstNameInput.sendKeys("Gary");
-        lastNameInput.sendKeys("Newton");
-        new Select(genderInput).selectByValue("Male");
-        dateOfBirthInput.sendKeys("20 March 1974");
+    private void enterClientDetails(Client client) {
+        firstNameInput.sendKeys(client.getFirstName());
+        lastNameInput.sendKeys(client.getLastName());
+        new Select(genderInput).selectByValue(client.getGender());
+        dateOfBirthInput.sendKeys(client.getDateOfBirth().toString());
         dateOfBirthInput.sendKeys(Keys.ENTER);
-        new Select(relationshipStatusInput).selectByVisibleText("Single");
-        new Select(homeownerStatusInput).selectByVisibleText("Homeowner");
-        createButton.click();
+        new Select(relationshipStatusInput).selectByVisibleText(client.getRelationshipStatus().getName());
+        new Select(homeownerStatusInput).selectByVisibleText(client.getHomeownerStatus().getName());
+    }
+
+    public void saveClient(Client client) {
+        enterClientDetails(client);
+        saveButton.click();
+    }
+
+    public void saveCouple(Client client, Client partner) {
+        enterClientDetails(client);
+        partnerFirstNameInput.sendKeys(partner.getFirstName());
+        partnerLastNameInput.sendKeys(partner.getLastName());
+        new Select(partnerGenderInput).selectByValue(partner.getGender());
+        partnerDateOfBirthInput.sendKeys(partner.getDateOfBirth().toString());
+        partnerDateOfBirthInput.sendKeys(Keys.ENTER);
+        saveButton.click();
     }
 }

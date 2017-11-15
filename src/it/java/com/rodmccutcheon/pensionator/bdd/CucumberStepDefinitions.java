@@ -2,7 +2,9 @@ package com.rodmccutcheon.pensionator.bdd;
 
 import com.rodmccutcheon.pensionator.bdd.config.CucumberConfig;
 import com.rodmccutcheon.pensionator.bdd.pageobjects.*;
-import cucumber.api.PendingException;
+import com.rodmccutcheon.pensionator.domain.Client;
+import com.rodmccutcheon.pensionator.domain.HomeownerStatus;
+import com.rodmccutcheon.pensionator.domain.RelationshipStatus;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java8.En;
@@ -12,18 +14,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = CucumberConfig.class)
 @SpringBootTest
-@Sql(scripts = "test-data.sql")
 public class CucumberStepDefinitions implements En {
 
     @Autowired
@@ -71,24 +72,26 @@ public class CucumberStepDefinitions implements En {
         });
 
         When("^I add a new single client$", () -> {
-            // Write code here that turns the phrase above into concrete actions
-            sidebarPageFragment.navigateToClients();
             clientsPage.navigateToEditClientPage();
-            editClientPage.saveClient();
+            editClientPage.saveClient(new Client("Gary", "Newton", new Date(), "Male", new HomeownerStatus("Homeowner"), new RelationshipStatus("Single")));
         });
 
         When("^I add a new couple$", () -> {
-            // Write code here that turns the phrase above into concrete actions
-            throw new PendingException();
+            clientsPage.navigateToEditClientPage();
+            Client client = new Client("Andrew", "Weatherall", new Date(), "Male", new HomeownerStatus("Homeowner"), new RelationshipStatus("Couple"));
+            Client partner = new Client("Grace", "Weatherall", new Date(), "Female", new HomeownerStatus("Homeowner"), new RelationshipStatus("Couple"));
+            editClientPage.saveCouple(client, partner);
         });
 
         Then("^I should see the duplicate calculation$", () -> {
-            assertThat(clientDetailPage.getCalculations("25 September 2017")).hasSize(2);
+            assertThat(clientDetailPage.getCalculations("25 September 2017"))
+                    .hasSize(2);
         });
 
         Then("^I should see the client listed$", () -> {    // Write code here that turns the phrase above into concrete actions
             sidebarPageFragment.navigateToClients();
-            assertThat(clientsPage.getClients()).contains("Gary Newton");
+            assertThat(clientsPage.getClients())
+                    .contains("Gary Newton");
         });
 
         Given("^I view the list of clients$", () -> {
@@ -100,9 +103,26 @@ public class CucumberStepDefinitions implements En {
         });
 
         Then("^I should no longer see the client listed$", () -> {
-            assertThat(clientsPage.getClients()).doesNotContain("Ned Flanders");
+            assertThat(clientsPage.getClients())
+                    .isNotEmpty()
+                    .doesNotContain("Ned Flanders");
         });
 
+        Then("^I should see both clients listed$", () -> {
+            sidebarPageFragment.navigateToClients();
+            assertThat(clientsPage.getClients())
+                    .contains("Andrew Weatherall", "Grace Weatherall");
+        });
+
+        When("^I delete a client who has a partner$", () -> {
+            clientsPage.deleteClient("Homer Simpson");
+        });
+
+        Then("^I should no longer see either client listed$", () -> {
+            assertThat(clientsPage.getClients())
+                    .isNotEmpty()
+                    .doesNotContain("Homer Simpson", "Marge Simpson");
+        });
     }
 
 }

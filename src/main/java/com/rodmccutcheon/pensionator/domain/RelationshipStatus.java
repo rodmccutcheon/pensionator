@@ -28,4 +28,10 @@ public class RelationshipStatus {
     public void setName(String name) {
         this.name = name;
     }
+
+    public RelationshipStatus() { }
+
+    public RelationshipStatus(String name) {
+        this.name = name;
+    }
 }

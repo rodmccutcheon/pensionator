@@ -43,13 +43,30 @@ public class Client {
     @NotNull
     private RelationshipStatus relationshipStatus;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "partner_id")
     private Client partner;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "client")
     @OrderBy("date DESC")
     private Set<Calculation> calculations;
+
+    public Client() { }
+
+    public Client(String firstName,
+                  String lastName,
+                  Date dateOfBirth,
+                  String gender,
+                  HomeownerStatus homeownerStatus,
+                  RelationshipStatus relationshipStatus) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.homeownerStatus = homeownerStatus;
+        this.relationshipStatus = relationshipStatus;
+    }
 
     public long getId() {
         return id;

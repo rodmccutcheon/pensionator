@@ -24,23 +24,23 @@ public class ClientsPage extends AbstractPage {
     }
 
     public void viewClient(final String name) {
-        webDriver
+        getWebDriver()
                 .findElement(By.xpath("//tr/td[contains(text(), '" + name + "')]/../td[3]/a[1]"))
                 .click();
     }
 
     public void deleteClient(final String name) {
-        webDriver
+        getWebDriver()
                 .findElement(By.xpath("//tr/td[contains(text(), '" + name + "')]/../td[3]/a[3]"))
                 .click();
-        webDriver
+        getWebDriver()
                 .switchTo()
                 .alert()
                 .accept();
     }
 
     public List<String> getClients() {
-        return webDriver
+        return getWebDriver()
                 .findElements(By.xpath("//tr/td[2]"))
                 .stream()
                 .map(WebElement::getText)

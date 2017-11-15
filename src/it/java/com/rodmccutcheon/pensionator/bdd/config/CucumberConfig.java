@@ -5,6 +5,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
@@ -14,6 +15,7 @@ import javax.sql.DataSource;
 public class CucumberConfig {
 
     @Bean(destroyMethod = "quit")
+    @Scope("singleton")
     public WebDriver webDriver() {
         System.setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         return new ChromeDriver();

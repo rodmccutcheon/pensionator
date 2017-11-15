@@ -8,10 +8,14 @@ import java.util.List;
 
 public abstract class AbstractPage {
 
-    protected WebDriver webDriver;
+    private WebDriver webDriver;
 
     public AbstractPage(WebDriver webDriver) {
         this.webDriver = webDriver;
+    }
+
+    public WebDriver getWebDriver() {
+        return webDriver;
     }
 
     /*public void navigate(final String value) {

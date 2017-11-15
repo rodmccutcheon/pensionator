@@ -19,10 +19,10 @@ public class ClientDetailPage extends AbstractPage {
     }
 
     public void duplicateCalculation(final String date) {
-        webDriver.findElement(By.xpath("//tr/td[contains(text(), '" + date + "')]/../td[4]/a[3]")).click();
+        getWebDriver().findElement(By.xpath("//tr/td[contains(text(), '" + date + "')]/../td[4]/a[3]")).click();
     }
 
     public List<WebElement> getCalculations(final String date) {
-        return webDriver.findElements(By.xpath("//tr/td[contains(text(), '" + date + "')]"));
+        return getWebDriver().findElements(By.xpath("//tr/td[contains(text(), '" + date + "')]"));
     }
 }

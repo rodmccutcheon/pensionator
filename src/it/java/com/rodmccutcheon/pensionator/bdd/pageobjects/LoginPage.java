@@ -28,7 +28,7 @@ public class LoginPage extends AbstractPage {
     }
 
     public LoginPage toPage() {
-        webDriver.navigate().to("http://localhost:8080");
+        getWebDriver().navigate().to("http://localhost:8080");
         return this;
     }
 

@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/it/resources/features")
-@SpringBootTest(classes = PensionatorApplication.class)
+@SpringBootTest
 public class CucumberTest {
 
 

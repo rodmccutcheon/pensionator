@@ -28,4 +28,10 @@ public class HomeownerStatus {
     public void setName(String name) {
         this.name = name;
     }
+
+    public HomeownerStatus() { }
+
+    public HomeownerStatus(String name) {
+        this.name = name;
+    }
 }
