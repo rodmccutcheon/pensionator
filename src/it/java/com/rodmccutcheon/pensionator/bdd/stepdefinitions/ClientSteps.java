@@ -1,23 +1,19 @@
-package com.rodmccutcheon.pensionator.bdd;
+package com.rodmccutcheon.pensionator.bdd.stepdefinitions;
 
 import com.rodmccutcheon.pensionator.bdd.config.CucumberConfig;
-import com.rodmccutcheon.pensionator.bdd.pageobjects.*;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.ClientsPage;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.EditClientPage;
+import com.rodmccutcheon.pensionator.bdd.pageobjects.SidebarPageFragment;
 import com.rodmccutcheon.pensionator.domain.Client;
 import com.rodmccutcheon.pensionator.domain.HomeownerStatus;
 import com.rodmccutcheon.pensionator.domain.RelationshipStatus;
-import cucumber.api.java.After;
-import cucumber.api.java.Before;
 import cucumber.api.java8.En;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.jdbc.datasource.init.ScriptUtils;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,10 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = CucumberConfig.class)
 @SpringBootTest
-public class CucumberStepDefinitions implements En {
-
-    @Autowired
-    private LoginPage loginPage;
+public class ClientSteps implements En {
 
     @Autowired
     private SidebarPageFragment sidebarPageFragment;
@@ -37,38 +30,22 @@ public class CucumberStepDefinitions implements En {
     private ClientsPage clientsPage;
 
     @Autowired
-    private ClientDetailPage clientDetailPage;
-
-    @Autowired
     private EditClientPage editClientPage;
 
-    @Autowired
-    private DataSource datasource;
+    public ClientSteps() {
 
-    @Before
-    public void setup() throws SQLException {
-        System.out.println("Cleaning up database");
-        ScriptUtils.executeSqlScript(datasource.getConnection(), new ClassPathResource("test-data.sql"));
-    }
-
-    @After
-    public void logout() {
-        sidebarPageFragment.logout();
-    }
-
-    public CucumberStepDefinitions() {
-        Given("^I login as a valid user$", () -> {
-            loginPage.toPage();
-            loginPage.doLogin("rod", "password123");
+        Given("^I view a client$", () -> {
+            sidebarPageFragment.navigateToClients();
+            clientsPage.viewClient("Ned Flanders");
         });
 
-        Given("^I view a user with calculations$", () -> {
+        Given("^I view a client with calculations$", () -> {
             sidebarPageFragment.navigateToClients();
             clientsPage.viewClient("Max Power");
         });
 
-        When("^I duplicate a calculation$", () -> {
-            clientDetailPage.duplicateCalculation("25 September 2017");
+        Given("^I view the list of clients$", () -> {
+            sidebarPageFragment.navigateToClients();
         });
 
         When("^I add a new single client$", () -> {
@@ -83,42 +60,33 @@ public class CucumberStepDefinitions implements En {
             editClientPage.saveCouple(client, partner);
         });
 
-        Then("^I should see the duplicate calculation$", () -> {
-            assertThat(clientDetailPage.getCalculations("25 September 2017"))
-                    .hasSize(2);
-        });
-
-        Then("^I should see the client listed$", () -> {    // Write code here that turns the phrase above into concrete actions
-            sidebarPageFragment.navigateToClients();
-            assertThat(clientsPage.getClients())
-                    .contains("Gary Newton");
-        });
-
-        Given("^I view the list of clients$", () -> {
-            sidebarPageFragment.navigateToClients();
-        });
-
         When("^I delete a client$", () -> {
             clientsPage.deleteClient("Ned Flanders");
-        });
-
-        Then("^I should no longer see the client listed$", () -> {
-            assertThat(clientsPage.getClients())
-                    .isNotEmpty()
-                    .doesNotContain("Ned Flanders");
-        });
-
-        Then("^I should see both clients listed$", () -> {
-            sidebarPageFragment.navigateToClients();
-            assertThat(clientsPage.getClients())
-                    .contains("Andrew Weatherall", "Grace Weatherall");
         });
 
         When("^I delete a client who has a partner$", () -> {
             clientsPage.deleteClient("Homer Simpson");
         });
 
-        Then("^I should no longer see either client listed$", () -> {
+        Then("^I should no longer see the client in the list of clients$", () -> {
+            assertThat(clientsPage.getClients())
+                    .isNotEmpty()
+                    .doesNotContain("Ned Flanders");
+        });
+
+        Then("^I should see the client in the list of clients$", () -> {
+            sidebarPageFragment.navigateToClients();
+            assertThat(clientsPage.getClients())
+                    .contains("Gary Newton");
+        });
+
+        Then("^I should see both clients in the list of clients$", () -> {
+            sidebarPageFragment.navigateToClients();
+            assertThat(clientsPage.getClients())
+                    .contains("Andrew Weatherall", "Grace Weatherall");
+        });
+
+        Then("^I should no longer see either client in the list of clients", () -> {
             assertThat(clientsPage.getClients())
                     .isNotEmpty()
                     .doesNotContain("Homer Simpson", "Marge Simpson");

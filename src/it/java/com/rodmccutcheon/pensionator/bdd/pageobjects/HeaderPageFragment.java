@@ -8,18 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SidebarPageFragment extends AbstractPage {
+public class HeaderPageFragment extends AbstractPage {
 
-    @FindBy(id = "clients")
-    private WebElement clientsMenuItem;
+    @FindBy(xpath = "//form[@id='logout']/button")
+    private WebElement logoutButton;
 
     @Autowired
-    public SidebarPageFragment(WebDriver webDriver) {
+    public HeaderPageFragment(WebDriver webDriver) {
         super(webDriver);
         PageFactory.initElements(webDriver, this);
     }
 
-    public void navigateToClients() {
-        clientsMenuItem.click();
+    public void logout() {
+        logoutButton.click();
     }
 }

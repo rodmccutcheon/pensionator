@@ -8,18 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SidebarPageFragment extends AbstractPage {
+public class CalculationResultPage extends AbstractPage {
 
-    @FindBy(id = "clients")
-    private WebElement clientsMenuItem;
+    @FindBy(id = "back")
+    private WebElement backButton;
 
     @Autowired
-    public SidebarPageFragment(WebDriver webDriver) {
+    public CalculationResultPage(WebDriver webDriver) {
         super(webDriver);
         PageFactory.initElements(webDriver, this);
     }
 
-    public void navigateToClients() {
-        clientsMenuItem.click();
+    public void navigateBackToClientDetailPage() {
+        backButton.click();
     }
 }

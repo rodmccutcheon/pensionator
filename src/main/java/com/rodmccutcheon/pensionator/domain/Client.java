@@ -47,7 +47,10 @@ public class Client {
     @JoinColumn(name = "partner_id")
     private Client partner;
 
-    @OneToMany(fetch = FetchType.EAGER, orphanRemoval = true, cascade = CascadeType.REMOVE, mappedBy = "client")
+    @OneToMany(fetch = FetchType.EAGER,
+            orphanRemoval = true,
+            cascade = { CascadeType.REMOVE, CascadeType.DETACH, CascadeType.MERGE },
+            mappedBy = "client")
     @OrderBy("date DESC")
     private Set<Calculation> calculations;
 

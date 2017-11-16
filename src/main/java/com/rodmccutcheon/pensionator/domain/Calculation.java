@@ -76,6 +76,13 @@ public class Calculation {
         deemedIncome.setDeemedIncomeRows(new ArrayList<DeemedIncomeRow>());
     }
 
+    public Calculation(Date date, List<Asset> assets, List<IncomeStream> incomeStreams, String comment) {
+        this.date = date;
+        this.assets = assets;
+        this.incomeStreams = incomeStreams;
+        this.comment = comment;
+    }
+
     public long getId() {
         return id;
     }

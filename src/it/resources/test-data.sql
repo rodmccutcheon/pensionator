@@ -11,7 +11,7 @@ INSERT INTO clients (first_name, last_name, date_of_birth, gender, homeowner_sta
   ('Max', 'Power', '1940-01-01', 'Male', 2, 1, null),
   ('Homer', 'Simpson', '1953-08-09', 'Male', 1, 2, null),
   ('Seymour', 'Skinner', '1953-08-09', 'Male', 1, 1, null),
-  ('Ned', 'Flanders', '1953-08-09', 'Male', 1, 3, null),
+  ('Ned', 'Flanders', '1953-08-09', 'Male', 1, 1, null),
   ('Marge', 'Simpson', '1953-08-09', 'Female', 1, 2, null),
   ('Marie', 'Nelson', '1946-07-12', 'Female', 1, 1, null),
   ('Mary', 'Cassidy', '1947-03-06', 'Female', 1, 2, null),

@@ -18,11 +18,11 @@
         <h3 th:text="${'Calculation: ' + #dates.format(calculation.date, 'dd MMMM yyyy')}"></h3>
         <br/>
         <div class="col-md-6">
-            <a th:href="${'/clients/' + calculation.client.id + '/calculations/edit/' + calculation.id}" class="btn btn-default btn-icon">
+            <a id="edit" th:href="${'/clients/' + calculation.client.id + '/calculations/edit/' + calculation.id}" class="btn btn-default btn-icon">
                 Edit
                 <i class="entypo-pencil"></i>
             </a>
-            <a th:href="${'/clients/' + calculation.client.id}" class="btn btn-default btn-icon">
+            <a id="back" th:href="${'/clients/' + calculation.client.id}" class="btn btn-default btn-icon">
                 Back
                 <i class="entypo-back"></i>
             </a>
