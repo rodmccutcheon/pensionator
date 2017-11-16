@@ -8,6 +8,7 @@ import com.rodmccutcheon.pensionator.domain.Asset;
 import com.rodmccutcheon.pensionator.domain.AssetType;
 import com.rodmccutcheon.pensionator.domain.Calculation;
 import com.rodmccutcheon.pensionator.domain.IncomeStream;
+import cucumber.api.PendingException;
 import cucumber.api.java8.En;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,7 @@ public class CalculationSteps implements En {
         });
 
         Then("^I should see the results of the calculation$", () -> {
-
+            throw new PendingException();
         });
 
         Then("^I should see the new calculation in the list of calculations$", () -> {

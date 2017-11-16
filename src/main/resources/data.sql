@@ -155,8 +155,10 @@ INSERT INTO income_test_threshold_groups (start_date, end_date) VALUES
 INSERT INTO income_test_thresholds (income_test_threshold_group_id, relationship_status_id, threshold, reduction_rate) VALUES
   (1, 1, 164, 0.5),
   (1, 2, 292, 0.25),
+  (1, 3, 164, 0.25),
   (2, 1, 168, 0.5),
-  (2, 2, 300, 0.25);
+  (2, 2, 300, 0.25),
+  (2, 3, 168, 0.25);
 
 INSERT INTO deeming_rate_groups (start_date, end_date) VALUES
   ('2016-07-01', '2017-06-30'),

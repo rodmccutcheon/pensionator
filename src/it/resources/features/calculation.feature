@@ -2,7 +2,6 @@ Feature: Duplicate Calculation
   As a user
   I want to be able to duplicate calculations to save time (not have to re-enter assets and income streams)
 
-  @wip
   Scenario: Create Calculation
     Given I login as a valid user
     And I view a client
